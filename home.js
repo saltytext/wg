@@ -1,5 +1,5 @@
-// player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn
-var player = ["Hero",10,10,10,7,1,0,0,false];
+// player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn, 9maxHP
+var player = ["Hero",10,10,10,7,1,0,0,false,10];
 // monster array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8expM
 var monster = [];
 
@@ -15,6 +15,10 @@ function storePlayer(){
 function loadPlayer(){
     player = localStorage.getItem("player");
 	player = JSON.parse(player);
+}
+
+function deletePlayer(){
+	localStorage.removeItem(player);
 }
 
 function printPlayer(){
@@ -55,6 +59,21 @@ function giveRewards() {
 	storePlayer();
 }
 
+function resetHealth() {
+	player[1] = player[9];
+	storePlayer();
+}
+
+function resetPlayer() {
+	deletePlayer();
+	storePlayer();
+	loadPlayer();
+	document.getElementById('status').innerHTML = "";
+	document.getElementById('result').innerHTML = "Your player has been reset!";
+	document.getElementById('info').innerHTML = "";
+	document.getElementById('actions').innerHTML = "Click the Home link above to start a new adventure..."
+}
+
 //Tests
 function speedTest() {
 	//determine who attacks first, if true player goes first.
@@ -72,6 +91,7 @@ function healthTest(){
 		document.getElementById('result').innerHTML = "Oh no! The " + monster[0] + " is too strong for you!";
 		document.getElementById('info').innerHTML = player[0] + " has been defeated!!";
 		document.getElementById('actions').innerHTML = "<input type='button' value='Return' onclick='location.reload()'>";
+		resetHealth();
 	}else if(monster[1] <= 0){
 		giveRewards();
 		document.getElementById('status').innerHTML = "Name: " + player[0] + " - Level: " + player[5] + " (" + player[6] +") - Health: " + player[1];
@@ -79,6 +99,7 @@ function healthTest(){
 		document.getElementById('info').innerHTML = "You are the best!";
 		document.getElementById('actions').innerHTML = "<input type='button' value='Return' onclick='location.reload()'>";
 		levelTest();
+		resetHealth();
 	}else{
 		attack();
 	}
