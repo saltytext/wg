@@ -1,31 +1,25 @@
-// 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn
+// player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn
 var player = ["Hero",10,10,10,7,1,0,0,false];
-var monster = ["!not set!",5,5,5,5,1,0,0,false];
+// monster array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8expM
+var monster = [];
 
-
+//Overall functions
 function rng(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+//variable setup functions
 function generateMonster() {
 	var mNames = ["Gremlin", "Hobgoblin", "Imp", "Slime"];
-	monster = [mNames[rng(1,4)-1],rng(5,10),rng(5,10),rng(5,10),rng(5,10)];
+	monster = [mNames[rng(1,4)-1],rng(5,10),rng(5,10),rng(5,10),rng(5,10),player[5],0,0,1];
 	if((monster[1]+monster[2]+monster[3]+monster[4]) == 40){
 		monster[0] = "Flawless " + monster[0];
+		monster[8] = 4;
 	}else if((monster[1]+monster[2]+monster[3]+monster[4]) >= 35){
 		monster[0] = "Greater " + monster[0];
+		monster[8] = 2;
 	}
 	return monster;
-}
-
-function speedTest() {
-	//determine who attacks first, if true player goes first.
-	if(player[4] >= monster[4]){
-		return player[8] = true;
-
-	}else{
-		return player[8] = false;
-	}
 }
 
 function setDMG() {
@@ -39,6 +33,48 @@ function setDMG() {
 	}
 }
 
+function giveRewards() {
+	//experience
+	player[6] += monster[5] * monster[8];
+}
+
+//Tests
+function speedTest() {
+	//determine who attacks first, if true player goes first.
+	if(player[4] >= monster[4]){
+		return player[8] = true;
+
+	}else{
+		return player[8] = false;
+	}
+}
+
+function healthTest(){
+	if(player[1] <= 0){
+		document.getElementById('result').innerHTML = "Oh no! The " + monster[0] + " is too strong for you!";
+		document.getElementById('info').innerHTML = player[0] + " has been defeated!!";
+		document.getElementById('actions').innerHTML = "<input type='button' value='Return' onclick='location.reload()'>";
+	}else if(monster[1] <= 0){
+		document.getElementById('result').innerHTML = "That " + monster[0] + " was no match for you!<br>You have defeated the " + monster[0] + "!";
+		document.getElementById('info').innerHTML = "You are the best!";
+		document.getElementById('actions').innerHTML = "<input type='button' value='Return' onclick='location.reload()'>";
+		giveRewards();
+		levelTest();
+	}else{
+		attack();
+	}
+}
+
+function levelTest() {
+	if(player[6] >= player[5]* 20){
+		player[6] = player[6] - (player[5]* 20);
+		player[5] += 1;
+	}
+	console.log(player[6]);
+	return player;
+}
+
+//Fight Functions
 function encounter() {
 	generateMonster();
 	document.getElementById('status').innerHTML = "Name: " + player[0] + " - Level: " + player[5] + " - Health: " + player[1];
@@ -67,8 +103,7 @@ function leaveFight() {
 	document.getElementById('actions').innerHTML = "<input type='button' value='Return' onclick='location.reload()'>";
 }
 
-
-
+//Player Actions
 function attack() {	
 	if(player[8]){
 		//Player attacking monster
@@ -90,18 +125,4 @@ function attack() {
 		player[8] = true;
 	}
 	
-}
-
-function healthTest(){
-	if(player[1] <= 0){
-		document.getElementById('result').innerHTML = "Oh no! The " + monster[0] + " is too strong for you!";
-		document.getElementById('info').innerHTML = player[0] + " has been defeated!!";
-		document.getElementById('actions').innerHTML = "<input type='button' value='Return' onclick='location.reload()'>";
-	}else if(monster[1] <= 0){
-		document.getElementById('result').innerHTML = "That " + monster[0] + " was no match for you!<br>You have defeated the " + monster[0] + "!";
-		document.getElementById('info').innerHTML = "You are the best!";
-		document.getElementById('actions').innerHTML = "<input type='button' value='Return' onclick='location.reload()'>";
-	}else{
-		attack();
-	}
 }
