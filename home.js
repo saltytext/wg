@@ -1,11 +1,11 @@
-// player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn, 9maxHP
-var player = ["Hero",10,10,10,7,1,0,0,false,10];
+// player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn, 9maxHP, 10pos
+var player = ["Hero",10,10,10,7,1,0,0,false,10,[0,0]];//player defaults
 // monster array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8expM
 var monster = [];
+var mNames = ["Gremlin", "Hobgoblin", "Imp", "Slime"];
 
 //variable setup functions
 function generateMonster() {
-	var mNames = ["Gremlin", "Hobgoblin", "Imp", "Slime"];
 	monster = [mNames[rng(1,4)-1],rng(5,10),rng(5,10),rng(5,10),rng(5,10),player[5],0,0,1];
 	if((monster[1]+monster[2]+monster[3]+monster[4]) == 40){
 		monster[0] = "Flawless " + monster[0];
@@ -67,14 +67,14 @@ function healthTest(){
 	if(player[1] <= 0){
 		updateResult("Oh no! The " + monster[0] + " is too strong for you!");
 		updateInfo(player[0] + " has been defeated!!");
-		updateActions("<input type='button' value='Return' onclick='location.reload()'>");
+		updateActions('<a href="explore.html"><button>Explore</button></a>');
 		resetHealth();
 	}else if(monster[1] <= 0){
 		giveRewards();
 		updateStatus();
 		updateResult("That " + monster[0] + " was no match for you!<br>You have defeated the " + monster[0] + "!");
 		updateInfo("You are the best!");
-		updateActions("<input type='button' value='Return' onclick='location.reload()'>");
+		updateActions('<a href="explore.html"><button>Explore</button></a>');
 		levelTest();
 		resetHealth();
 	}else{
@@ -117,7 +117,7 @@ function leaveFight() {
 	updateStatus();
 	updateResult('You ran away like a little girl...');
 	updateInfo('While running away, the ' + monster[0] +  ' taunts you.');
-	updateActions("<input type='button' value='Return' onclick='location.reload()'>");
+	updateActions('<a href="explore.html"><button>Explore</button></a>');
 }
 
 //Player Actions

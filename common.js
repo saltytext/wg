@@ -1,6 +1,6 @@
 //Common functions
 function updateVersion(){
-	document.getElementById('version').innerHTML = "Version: 0.0.7";
+	document.getElementById('version').innerHTML = "Version: 0.0.8";
 }
 
 function rng(min, max){
