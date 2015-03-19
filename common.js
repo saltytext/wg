@@ -1,6 +1,7 @@
 //Common functions
-function updateVersion(){
-	document.getElementById('version').innerHTML = "Version: 0.0.8";
+function updateNavVersion(){
+	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
+	document.getElementById('version').innerHTML = "Version: 0.0.9";
 }
 
 function rng(min, max){
@@ -43,6 +44,10 @@ function updateInfo(i){
 		i = "Monster: " + monster[0] + " - Health: " + monster[1];
 	}
 	document.getElementById('info').innerHTML = i;
+}
+
+function updateImage(p){
+	document.getElementById('image').innerHTML = "<img src=" + p + ">";
 }
 
 function updateActions(a){

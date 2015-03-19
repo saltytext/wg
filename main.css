@@ -5,3 +5,11 @@ footer {
 	text-align: left;
 	font-weight: bold;
 }
+ul{
+	padding-bottom: 25px;
+}
+li {
+    display: inline;
+	text-transform: uppercase;
+	padding: 20px;
+}

@@ -48,7 +48,7 @@ function resetPlayer() {
 	updateStatus("");
 	updateResult("Your player has been reset!");
 	updateInfo("");
-	updateActions("Click the Home link above to start a new adventure...");
+	updateActions("Click the fight link above to start a new adventure...");
 }
 
 //Tests
