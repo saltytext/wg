@@ -1,29 +1,58 @@
 //Common functions
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.9";
+	document.getElementById('version').innerHTML = "Version: 0.0.10";
 }
 
 function rng(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function createPlayer(name){
+	if(name == ""){
+		document.getElementById("name").value = "";
+		updateStatus("You did not tell me your name..");
+		updateActions('<input type="button" value="Create Player" onclick="createPlayer(document.getElementById(&apos;name&apos;).value)">');
+	}else if(name != ""){
+		player = [name,10,10,10,7,1,0,0,false,10,[0,0]];
+		storePlayer();
+		window.open("explore.html", "_self");
+	}
+}
+
 function storePlayer(){
+	console.log("h");
     localStorage.setItem("player",JSON.stringify(player));
 }
 
 function loadPlayer(){
-    player = localStorage.getItem("player");
-	player = JSON.parse(player);
+    if(localStorage.getItem("player") == ""){
+		updateResult("ERROR: No saved player to load");
+		updateActions('Click <a href="createplayer.html">here</a> to create a new player');
+		return
+	}
+	player = localStorage.getItem("player");
+	player = JSON.parse(localStorage.getItem("player"));
 }
 
 function deletePlayer(){
-	localStorage.removeItem(player);
+	localStorage.setItem("player","");
 }
 
 function printPlayer(){
 	//Used for debugging
+	if(player == ""){
+		console.log("undefined player");
+	}
 	console.log(player);
+}
+
+function resetPlayer() {
+	deletePlayer();
+	updateStatus("");
+	updateResult("Your player has been reset!");
+	updateInfo("");
+	updateActions('Click <a href="createplayer.html">here</a> to create a new player');
 }
 
 function updateStatus(s){

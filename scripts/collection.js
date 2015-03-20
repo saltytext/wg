@@ -1,7 +1,3 @@
-function nothing(){
-	return;
-}
-
 function collection(t){
 	loadPlayer();
 	updateInfo(player[0] + " was here");

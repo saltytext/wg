@@ -22,9 +22,11 @@ function explore() {
 function movePlayerX(x) {
 	player[10][0] += x;
 	updateStatus('You are currently at (' + player[10][0] + ", " + player[10][1] + ").");
+	storePlayer();
 }
 
 function movePlayerY(y) {
 	player[10][1] += y;
 	updateStatus('You are currently at (' + player[10][0] + ", " + player[10][1] + ").");
+	storePlayer();
 }

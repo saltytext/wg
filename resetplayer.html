@@ -1,21 +1,18 @@
 <!doctype html>
 <html>
 	<head>
-		<link rel="stylesheet" href="html5reset-1.6.1.css">
-		<link rel="stylesheet" href="main.css">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/html5reset-1.6.1.css">
+		<link rel="stylesheet" href="css/main.css">
+		<script src="scripts/common.js"></script>
 		<title>Monster Fight!</title>
 	</head>
-	<script src="common.js"></script>
-	<script src="home.js"></script>
-	<body onload="updateVersion()">
+	<body onload="updateNavVersion(); loadPlayer()">
 		<header>
 			<h1>Welcome</h1>
 			<br>
-			<nav>
-				<ul>
-					<li><a href="home.html">Home</a></li>
-					
-				</ul>
+			<nav id="nav">
+				
 			</nav>
 		</header>
 		<div class="content">
@@ -25,6 +22,10 @@
 			</div>
 			<br>
 			<div id="result">
+				
+			</div>
+			<br>
+			<div id="image">
 				
 			</div>
 			<br>

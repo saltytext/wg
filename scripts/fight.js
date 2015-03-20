@@ -1,5 +1,5 @@
 // player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn, 9maxHP, 10pos
-var player = ["Hero",10,10,10,7,1,0,0,false,10,[0,0]];//player defaults
+//var player = [];//player defaults
 // monster array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8expM
 var monster = [];
 var mNames = ["Gremlin", "Hobgoblin", "Imp", "Slime"];
@@ -39,16 +39,6 @@ function giveRewards() {
 function resetHealth() {
 	player[1] = player[9];
 	storePlayer();
-}
-
-function resetPlayer() {
-	deletePlayer();
-	storePlayer();
-	loadPlayer();
-	updateStatus("");
-	updateResult("Your player has been reset!");
-	updateInfo("");
-	updateActions("Click the fight link above to start a new adventure...");
 }
 
 //Tests

@@ -1,29 +1,28 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="css/html5reset-1.6.1.css">
 		<link rel="stylesheet" href="css/main.css">
 		<script src="scripts/common.js"></script>
-		<script src="scripts/collection.js"></script>
 		<title>Monster Fight!</title>
 	</head>
-	<body onload="updateNavVersion(); collection(rng(1,4))">
+	<body onload="updateNavVersion()">
 		<header>
 			<h1>Welcome</h1>
 			<br>
 			<nav id="nav">
-				
+
 			</nav>
 		</header>
 		<div class="content">
 			<br>
 			<div id="status">
-			
+				Welcome to wg,<br>What is your Name?
 			</div>
 			<br>
 			<div id="result">
-				
+				<input type="text" value="" id="name">
 			</div>
 			<br>
 			<div id="image">
@@ -35,6 +34,7 @@
 			</div>
 			<br>
 			<div id="actions">
+				<input type="button" value="Create Player" onclick="createPlayer(document.getElementById('name').value)">
 			</div>
 			<br>
 
