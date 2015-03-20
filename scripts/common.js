@@ -1,7 +1,7 @@
 //Common functions
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.10";
+	document.getElementById('version').innerHTML = "Version: 0.0.11";
 }
 
 function rng(min, max){
@@ -21,7 +21,7 @@ function createPlayer(name){
 }
 
 function storePlayer(){
-	console.log("h");
+	//console.log("h");
     localStorage.setItem("player",JSON.stringify(player));
 }
 
