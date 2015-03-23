@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/html5reset-1.6.1.css">
+		<link rel="stylesheet" href="css/main.css">
+		<script src="scripts/common.js"></script>
+		<title>Monster Fight!</title>
+	</head>
+	<body onload="updateNavVersion();">
+		<header>
+			<h1>Welcome</h1>
+			<br>
+			<nav id="nav">
+
+			</nav>
+		</header>
+		<div class="content">
+			<br>
+			<div id="status">
+			
+			</div>
+			<br>
+			<div id="result">
+				
+			</div>
+			<br>
+			<div id="image">
+				
+			</div>
+			<br>
+			<div id="info">
+							
+			</div>
+			<br>
+			<div id="actions">
+				<input type="button" onclick="initStorage('pinv1','Player Inventory 1')" value="init storage">
+				<input type="button" onclick="loadObject('pinv1')" value="load storage">
+				<input type="button" onclick="printObject('pinv1')" value="print storage">
+				<input type="button" onclick="addItem(['Wood',1],'pinv1')" value="add item">
+				<input type="button" onclick="addItem(['Coins',1],'pinv1')" value="add item2">
+				<input type="button" onclick="console.log(pinv1[1][0] +': '+pinv1[1][1])" value="print item 1">
+			</div>
+			<br>
+
+		</div>
+	</body>
+	<footer>
+		<div id="version">
+			
+		</div>
+	</footer>
+</html>

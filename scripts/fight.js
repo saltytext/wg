@@ -26,19 +26,19 @@ function setDMG() {
 	if(monster[7] <0){
 		monster[7] = 0;
 	}
-	storePlayer();
+	storeObject("player");
 }
 
 function giveRewards() {
 	//experience
 	player[6] += monster[5] * monster[8];
 	//Saving
-	storePlayer();
+	storeObject("player");
 }
 
 function resetHealth() {
 	player[1] = player[9];
-	storePlayer();
+	storeObject("player");
 }
 
 //Tests
@@ -50,7 +50,7 @@ function speedTest() {
 	}else{
 		player[8] = false;
 	}
-	storePlayer();
+	storeObject("player");
 }
 
 function healthTest(){
@@ -77,7 +77,7 @@ function levelTest() {
 		player[6] = player[6] - (player[5]* 20);
 		player[5] += 1;
 	}
-	storePlayer();
+	storeObject("player");
 }
 
 //Fight Functions

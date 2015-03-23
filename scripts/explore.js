@@ -3,9 +3,9 @@
 function exploreOptions(o) {
 	if(o == 5){
 		updateResult('You see the shadow of a figure...');
-		updateActions('<a href="fight.html"><button onclick="storePlayer()">Monster!</button></a>');
+		updateActions('<a href="fight.html"><button onclick="storeObject("player")">Monster!</button></a>');
 	}else if(o == 3){
-		storePlayer();
+		storeObject("player");
 		window.open("collection.html", "_self");
 	}	
 	else{
@@ -22,11 +22,11 @@ function explore() {
 function movePlayerX(x) {
 	player[10][0] += x;
 	updateStatus('You are currently at (' + player[10][0] + ", " + player[10][1] + ").");
-	storePlayer();
+	storeObject("player");
 }
 
 function movePlayerY(y) {
 	player[10][1] += y;
 	updateStatus('You are currently at (' + player[10][0] + ", " + player[10][1] + ").");
-	storePlayer();
+	storeObject("player");
 }

@@ -1,11 +1,20 @@
 //Common functions
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.11";
+	document.getElementById('version').innerHTML = "Version: 0.0.12";
 }
 
 function rng(min, max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function storeObject(object){
+    localStorage.setItem(object,JSON.stringify(window[object]));
+}
+
+function loadObject(object){
+	window[object] = localStorage.getItem(object);
+	window[object] = JSON.parse(localStorage.getItem(object));
 }
 
 function createPlayer(name){
@@ -15,14 +24,9 @@ function createPlayer(name){
 		updateActions('<input type="button" value="Create Player" onclick="createPlayer(document.getElementById(&apos;name&apos;).value)">');
 	}else if(name != ""){
 		player = [name,10,10,10,7,1,0,0,false,10,[0,0]];
-		storePlayer();
+		storeObject("player");
 		window.open("explore.html", "_self");
 	}
-}
-
-function storePlayer(){
-	//console.log("h");
-    localStorage.setItem("player",JSON.stringify(player));
 }
 
 function loadPlayer(){
@@ -35,25 +39,34 @@ function loadPlayer(){
 	player = JSON.parse(localStorage.getItem("player"));
 }
 
-function deletePlayer(){
-	localStorage.setItem("player","");
+function deleteObject(object){
+	localStorage.setItem(object,"");
 }
 
-function printPlayer(){
+function printObject(object){
 	//Used for debugging
-	if(player == ""){
-		console.log("undefined player");
-	}
-	console.log(player);
+	console.log(window[object]);
 }
 
 function resetPlayer() {
-	deletePlayer();
+	deleteObject("player");
 	updateStatus("");
 	updateResult("Your player has been reset!");
 	updateInfo("");
 	updateActions('Click <a href="createplayer.html">here</a> to create a new player');
 }
+
+function initStorage(name,inv) {
+	window[name] = [inv];
+	storeObject(name);
+}
+
+function addItem(item, storage) {
+	loadObject(storage);
+	window[storage].push(item);
+	storeObject(storage);
+}
+
 
 function updateStatus(s){
 	//s == undefined shows player status by default.
