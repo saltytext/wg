@@ -1,4 +1,4 @@
-// player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn, 9maxHP, 10pos
+// player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn, 9maxHP, 10pos, 11backpack
 //var player = [];//player defaults
 // monster array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8expM
 var monster = [];

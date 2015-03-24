@@ -7,7 +7,7 @@
 		<script src="scripts/common.js"></script>
 		<title>Monster Fight!</title>
 	</head>
-	<body onload="updateNavVersion();">
+	<body onload="updateNavVersion(); loadPlayer(); loadObject(player[11])">
 		<header>
 			<h1>Welcome</h1>
 			<br>
@@ -34,12 +34,8 @@
 			</div>
 			<br>
 			<div id="actions">
-				<input type="button" onclick="initStorage('pinv1','Player Inventory 1')" value="init storage">
-				<input type="button" onclick="loadObject('pinv1')" value="load storage">
-				<input type="button" onclick="printObject('pinv1')" value="print storage">
-				<input type="button" onclick="addItem(['Wood',1],'pinv1')" value="add item">
-				<input type="button" onclick="addItem(['Coins',1],'pinv1')" value="add item2">
-				<input type="button" onclick="console.log(pinv1[1][0] +': '+pinv1[1][1])" value="print item 1">
+				<input type="button" onclick="console.log(window[player[11]])" value="print wood #">
+				
 			</div>
 			<br>
 
