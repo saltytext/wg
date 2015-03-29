@@ -1,7 +1,9 @@
 //Common functions
+var player = {};
+
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.14";
+	document.getElementById('version').innerHTML = "Version: 0.0.15";
 }
 
 function rng(min, max){
@@ -17,6 +19,15 @@ function loadObject(object){
 	window[object] = JSON.parse(localStorage.getItem(object));
 }
 
+function deleteObject(object){
+	localStorage.setItem(object,"");
+}
+
+function printObject(object){
+	//Used for debugging
+	console.log(window[object]);
+}
+
 function createPlayer(name){
 	if(name == ""){
 		document.getElementById("name").value = "";
@@ -24,12 +35,22 @@ function createPlayer(name){
 		updateActions('<input type="button" value="Create Player" onclick="createPlayer(document.getElementById(&apos;name&apos;).value)">');
 	}else if(name != ""){
 	// player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn, 9maxHP, 10pos, 11backpack
-		player = {
-		name: name, health: 10, attack: 10, defense: 10, speed: 7, level: 1, exp: 0, damage: 0, turn: false, maxHealth: 10, location: [0,0]};
-		initStorage("Backpack", 20);
+		player = {name: name, health: 10, attack: 10, defense: 10, speed: 7, level: 1, exp: 0, damage: 0, turn: false, maxHealth: 10, location: [0,0], inventory: []};
 		storeObject("player");
-		//window.open("explore.html", "_self");
+		window.open("explore.html", "_self");
 	}
+}
+
+function addItem(storage, item){
+	for(var i = 0;i < storage.length-1;i++);
+		if(storage.length == 0){
+			storage.push(item);
+		}else if(storage[i][0] == item[0]){
+			storage[i][1] += item[1];
+		}
+		else{
+			storage.push(item);
+		}
 }
 
 function loadPlayer(){
@@ -40,31 +61,14 @@ function loadPlayer(){
 	}
 	player = localStorage.getItem("player");
 	player = JSON.parse(localStorage.getItem("player"));
-	printObject("player");
-}
-
-function deleteObject(object){
-	localStorage.setItem(object,"");
-}
-
-function printObject(object){
-	//Used for debugging
-	console.log(window[object]);
 }
 
 function resetPlayer() {
-	deleteObject("storage");
 	deleteObject("player");
 	updateStatus("");
 	updateResult("Your player has been reset!");
 	updateInfo("");
 	updateActions('Click <a href="createplayer.html">here</a> to create a new player');
-}
-
-function initStorage(name, maxItems) {
-	//function to add storage functions to storages.
-	window[name] = {name: name, maxItems: maxItems, numItems: 0};
-	storeObject(name);
 }
 
 function updateStatus(s){
