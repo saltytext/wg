@@ -67,7 +67,7 @@ function woodcutting(step, n){
 	//meh you get initial amount.
 	updateStatus("You did not gain any pieces...");
 	updateResult("You have received " + co[1] + " wood.");
-	updateActions('<a href="explore.html"><button onclick="addItem([&apos;Wood&apos;,co[1]],player.inventory)">Explore</button></a>');
+	updateActions('<a href="explore.html"><button onclick="addItem([&apos;Wood&apos;,co[1]],player[11])">Explore</button></a>');
 	}else if(step == 3 && n <= 49){
 	//5Lost gamble risk. Time to pay...?
 	console.log("5 :"+ n);
@@ -85,13 +85,13 @@ function woodcutting(step, n){
 		updateStatus("You have destroyed some of the wood.");
 		updateResult("You were able to salvage " + co[1] + " pieces.");
 		updateInfo("");
-		updateActions('<a href="explore.html"><button onclick="addItem([&apos;Wood&apos;,co[1]],player.inventory)">Explore</button></a>');
+		updateActions('<a href="explore.html"><button onclick="addItem([&apos;Wood&apos;,co[1]],player[11])">Explore</button></a>');
 		}
 	}else if(step == "stop"){
 		updateStatus("");
 		updateResult("You have collected " + n + " wood.");
 		updateInfo("");
-		updateActions('<a href="explore.html"><button onclick="addItem([&apos;Wood&apos;,n],player.inventory)">Explore</button></a>');
+		updateActions('<a href="explore.html"><button onclick="addItem([&apos;Wood&apos;,n],player[11])">Explore</button></a>');
 	}
 }
 

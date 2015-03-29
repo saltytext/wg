@@ -15,18 +15,18 @@ function exploreOptions(o) {
 
 function explore() {
 	loadPlayer();
-	updateStatus('You are currently at (' + player.location[0] + ", " + player.location[1] + ").");
+	updateStatus('You are currently at (' + player[10][0] + ", " + player[10][1] + ").");
 	updateActions('<input type="button" onclick="movePlayerY(1); exploreOptions(rng(1,5))" value="North"><br><input type="button" onclick="movePlayerX(-1); exploreOptions(rng(1,5))" value="West"><input type="button" onclick="movePlayerX(1); exploreOptions(rng(1,5))" value="East"><br><input type="button" onclick="movePlayerY(-1); exploreOptions(rng(1,5))" value="South">');
 }
 
 function movePlayerX(x) {
-	player.location[0] += x;
-	updateStatus('You are currently at (' + player.location[0] + ", " + player.location[1] + ").");
+	player[10][0] += x;
+	updateStatus('You are currently at (' + player[10][0] + ", " + player[10][1] + ").");
 	storeObject("player");
 }
 
 function movePlayerY(y) {
-	player.location[1] += y;
-	updateStatus('You are currently at (' + player.location[0] + ", " + player.location[1] + ").");
+	player[10][1] += y;
+	updateStatus('You are currently at (' + player[10][0] + ", " + player[10][1] + ").");
 	storeObject("player");
 }

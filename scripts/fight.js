@@ -6,7 +6,7 @@ var mNames = ["Gremlin", "Hobgoblin", "Imp", "Slime"];
 
 //variable setup functions
 function generateMonster() {
-	monster = [mNames[rng(1,4)-1],rng(5,10),rng(5,10),rng(5,10),rng(5,10),player.level,0,0,1];
+	monster = [mNames[rng(1,4)-1],rng(5,10),rng(5,10),rng(5,10),rng(5,10),player[5],0,0,1];
 	if((monster[1]+monster[2]+monster[3]+monster[4]) == 40){
 		monster[0] = "Flawless " + monster[0];
 		monster[8] = 4;
@@ -18,11 +18,11 @@ function generateMonster() {
 }
 
 function setDMG() {
-	player.damage = (player.attack*1.5) - monster[3];
-	if(player.speed <0){
-		player.speed = 0;
+	player[7] = (player[2]*1.5) - monster[3];
+	if(player[7] <0){
+		player[7] = 0;
 	}
-	monster[7] = (monster[2]*1.5)- player.defense;
+	monster[7] = (monster[2]*1.5)- player[3];
 	if(monster[7] <0){
 		monster[7] = 0;
 	}
@@ -31,32 +31,32 @@ function setDMG() {
 
 function giveRewards() {
 	//experience
-	player.exp += monster[5] * monster[8];
+	player[6] += monster[5] * monster[8];
 	//Saving
 	storeObject("player");
 }
 
 function resetHealth() {
-	player.health = player.maxHealth;
+	player[1] = player[9];
 	storeObject("player");
 }
 
 //Tests
 function speedTest() {
 	//determine who attacks first, if true player goes first.
-	if(player.speed >= monster[4]){
-		player.turn = true;
+	if(player[4] >= monster[4]){
+		player[8] = true;
 
 	}else{
-		player.turn = false;
+		player[8] = false;
 	}
 	storeObject("player");
 }
 
 function healthTest(){
-	if(player.health <= 0){
+	if(player[1] <= 0){
 		updateResult("Oh no! The " + monster[0] + " is too strong for you!");
-		updateInfo(player.name + " has been defeated!!");
+		updateInfo(player[0] + " has been defeated!!");
 		updateActions('<a href="explore.html"><button>Explore</button></a>');
 		resetHealth();
 	}else if(monster[1] <= 0){
@@ -73,9 +73,9 @@ function healthTest(){
 }
 
 function levelTest() {
-	if(player.exp >= player.level * 20){
-		player.exp = player.exp - (player.level* 20);
-		player.level += 1;
+	if(player[6] >= player[5]* 20){
+		player[6] = player[6] - (player[5]* 20);
+		player[5] += 1;
 	}
 	storeObject("player");
 }
@@ -94,7 +94,7 @@ function startFight() {
 	setDMG();
 	speedTest();
 	updateStatus();
-	if(player.turn){
+	if(player[8]){
 		updateResult('The ' + monster[0] + ' is not aware of you.');
 	}else{
 		updateResult('The ' + monster[0] + ' is looking at you!');
@@ -112,24 +112,24 @@ function leaveFight() {
 
 //Player Actions
 function attack() {	
-	if(player.turn){
+	if(player[8]){
 		//Player attacking monster
 		//monster health - playerDMG
-		monster[1] -= player.damage;
+		monster[1] -= player[7];
 		updateStatus();
-		updateResult(player.name + ' attacks the ' + monster[0] +" for "+ player.damage + "!");
+		updateResult(player[0] + ' attacks the ' + monster[0] +" for "+ player[7] + "!");
 		updateInfo();
 		updateActions("<input type='button' value='Continue' onclick='healthTest()'>");
-		player.turn = false;
+		player[8] = false;
 	}else{
 		//Monster attacking Player
 		//player health - monsterDMG
-		player.health -= monster[7];
+		player[1] -= monster[7];
 		updateStatus();
 		updateResult(monster[0] + ' attacks you for '+ monster[7] + "!");
 		updateInfo();
 		updateActions("<input type='button' value='Continue' onclick='healthTest()'>");
-		player.turn = true;
+		player[8] = true;
 	}
 	
 }
