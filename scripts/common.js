@@ -1,7 +1,7 @@
 //Common functions
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.13";
+	document.getElementById('version').innerHTML = "Version: 0.0.14";
 }
 
 function rng(min, max){
@@ -23,10 +23,12 @@ function createPlayer(name){
 		updateStatus("You did not tell me your name..");
 		updateActions('<input type="button" value="Create Player" onclick="createPlayer(document.getElementById(&apos;name&apos;).value)">');
 	}else if(name != ""){
-		player = [name,10,10,10,7,1,0,0,false,10,[0,0],"Backpack"];
-		initStorage(player[11]);
+	// player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn, 9maxHP, 10pos, 11backpack
+		player = {
+		name: name, health: 10, attack: 10, defense: 10, speed: 7, level: 1, exp: 0, damage: 0, turn: false, maxHealth: 10, location: [0,0]};
+		initStorage("Backpack", 20);
 		storeObject("player");
-		window.open("explore.html", "_self");
+		//window.open("explore.html", "_self");
 	}
 }
 
@@ -51,7 +53,7 @@ function printObject(object){
 }
 
 function resetPlayer() {
-	deleteObject(player[11]);
+	deleteObject("storage");
 	deleteObject("player");
 	updateStatus("");
 	updateResult("Your player has been reset!");
@@ -59,37 +61,16 @@ function resetPlayer() {
 	updateActions('Click <a href="createplayer.html">here</a> to create a new player');
 }
 
-function initStorage(name) {
-	window[name] = [];
+function initStorage(name, maxItems) {
+	//function to add storage functions to storages.
+	window[name] = {name: name, maxItems: maxItems, numItems: 0};
 	storeObject(name);
-}
-
-function itemExists(item,storage){
-	//returns location in inventory where the item exists.
-	for(i=0;i < window[storage].length;i++){
-		if(window[storage][i][0] == item[0]){
-			return i;
-		}
-	}
-	return "does not exist";
-}
-
-function addItem(item,storage) {
-	loadObject(storage);
-	p = itemExists(item,storage);
-	if(p == "does not exist"){
-		window[storage].push(item);
-	}else{
-		window[storage][p][1] += item[1];
-	}
-	storeObject(storage);
-	printObject(storage);
 }
 
 function updateStatus(s){
 	//s == undefined shows player status by default.
 	if(s == undefined){
-		s = "Name: " + player[0] + " - Level: " + player[5] + " (" + player[6] +") - Health: " + player[1];
+		s = "Name: " + player.name + " - Level: " + player.level + " (" + player.exp +") - Health: " + player.health;
 	}
 	document.getElementById('status').innerHTML = s;
 }
