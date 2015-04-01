@@ -3,7 +3,7 @@ var player = {};
 
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.15";
+	document.getElementById('version').innerHTML = "Version: 0.0.16";
 }
 
 function rng(min, max){
@@ -42,15 +42,20 @@ function createPlayer(name){
 }
 
 function addItem(storage, item){
-	for(var i = 0;i < storage.length-1;i++);
-		if(storage.length == 0){
-			storage.push(item);
-		}else if(storage[i][0] == item[0]){
-			storage[i][1] += item[1];
+	if(storage.length == 0){
+		storage.push(item);
+		return
+	}else{
+		for(var i = 0;i <= storage.length;i++){
+			if(storage[i] == undefined){
+				storage.push(item);
+				return
+			}else if(storage[i][0] == item[0]){
+				storage[i][1] += item[1];
+				return
+			}
 		}
-		else{
-			storage.push(item);
-		}
+	}
 }
 
 function loadPlayer(){
@@ -97,4 +102,9 @@ function updateImage(p){
 
 function updateActions(a){
 	document.getElementById('actions').innerHTML = a;
+}
+
+function pageLoad(){
+	updateNavVersion();
+	loadPlayer();
 }

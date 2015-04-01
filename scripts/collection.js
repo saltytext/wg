@@ -4,8 +4,9 @@ function collection(t){
 	loadPlayer();
 	updateActions('<a href="explore.html"><button>Explore</button></a>');
 	if(t == 1){
-		//Mining
-		updateResult("You are mining");
+		//Mining, co = 0type,1initial,2bonus,3stop
+		co = ["",0,0,0];
+		updateResult("You see some exposed earth..");
 		mining(1);
 	}else if(t == 2){
 		//Woodcutting, co = 0success,1initial,2bonus,3stop
@@ -23,16 +24,73 @@ function collection(t){
 	}
 }
 
-function mining(step){
+function mining(step, n){
 	if(step == 1){
-	updateStatus("mine step1");
-	updateActions('<input type="button" onclick="mining(2)" value="Mine!">');
-	}else if(step ==2){
-	updateStatus("mine step2");
-	updateActions('<input type="button" onclick="mining(3)" value="Mine!">');
+	//1initial discovery
+	updateInfo("Press Prospect to identify if there is anything here.");
+	updateActions('<input type="button" onclick="mining(2,rng(1,2))" value="Prospect!">');
+	}else if(step == 2){
+	//2discovery 1 is stone, 2 is iron
+	updateStatus("You begin to prospect and....");
+	co[1] = rng(1,2);
+	if(n == 1){
+		co[0] = "Iron";
+		updateResult("and identify some IRON!!");
+		updateInfo("Click Mine to gather the iron.");
 	}else{
-	updateStatus("mine step3- click fight for now");
-	updateActions('');
+		co[0] = "Stone";
+		updateResult("it looks to just be STONE.");
+		updateInfo("Click Mine to gather some stone.");
+	}
+	updateActions('<input type="button" onclick="mining(3,rng(50,100))" value="Mine!">');
+	//note updateactions should be onclick="mining(3,rng(1,100)):
+	}else if(step == 3 && n >= 95){
+	//Collected some and found a GEM! can continue
+	addItem(player.inventory,["Gem",1]);
+	storeObject("player");
+	co[2] = (co[1] + co[2]);
+	co[3] = co[2];
+	updateStatus("Great Success!!! You have found a Rare Gem, and stop to grab it!<br>");
+	updateResult("Additionally you collected " + co[2] + " " + co[0] + "!");
+	updateInfo("You can see a bit more " + co[0] + ". Continue mining?");
+	updateActions('<input type="button" onclick="mining(3, rng(1,94))" value="Yes"><input type="button" onclick="mining(&apos;stop&apos;,co[2])" value="Stop">');
+	}else if(step == 3 && n >= 75){
+	//Collect a lot and can continue
+	co[2] = (co[1] + rng(2,4) + co[2]);
+	co[3] = co[2];
+	updateStatus("You strike the earth and a huge chunk falls off!");
+	updateResult("You have collected " + co[2] + " " + co[0] + "!");
+	updateInfo("You can see a bit more " + co[0] + ". Continue mining?");
+	updateActions('<input type="button" onclick="mining(3, rng(1,100))" value="Yes"><input type="button" onclick="mining(&apos;stop&apos;,co[2])" value="Stop">');
+	}else if(step == 3 && n >= 50){
+	//Collected some and can continue
+	co[2] = (co[1] + rng(1,2) + co[2]);
+	co[3] = co[2];
+	updateStatus("You manage to collect some " + co[0] + "...");
+	updateResult("You currently have collected " + co[2] + " " + co[0]);
+	updateInfo("You can see a bit more " + co[0] + ". Continue mining?");
+	updateActions('<input type="button" onclick="mining(3, rng(1,100))" value="Yes"><input type="button" onclick="mining(&apos;stop&apos;,co[2])" value="Stop">');
+	}else if(step == 3 && n <= 49){
+	//risky time
+		n2 = rng(1,3);
+		if(n2 != 1){
+		//5aLost get nothing.
+		updateStatus("You swing a strong blow with your pickaxe.");
+		updateResult("You destroyed all of your existing " + co[0] +".");
+		updateInfo("");
+		updateActions('<a href="explore.html"><button>Explore</button></a>'); //you do not get anything.
+		}else{
+		//5bLost but keep initial winning of c1
+		updateStatus("You have destroyed some of the " + co[0]);
+		updateResult("You were able to salvage " + co[1] + " pieces.");
+		updateInfo("");
+		updateActions('<button onclick="addItem(player.inventory,[co[0];,co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
+		}
+	}else if(step == "stop"){
+		updateStatus("");
+		updateResult("You have collected " + co[3] + " " + co[0] + ".");
+		updateInfo("");
+		updateActions('<button onclick="addItem(player.inventory,[co[0],co[3]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
 	}
 }
 
