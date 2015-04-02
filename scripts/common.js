@@ -3,7 +3,7 @@ var player = {};
 
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.16";
+	document.getElementById('version').innerHTML = "Version: 0.0.17";
 }
 
 function rng(min, max){
@@ -42,7 +42,9 @@ function createPlayer(name){
 }
 
 function addItem(storage, item){
-	if(storage.length == 0){
+	if(item[1] == 0){
+		return
+	}else if(storage.length == 0){
 		storage.push(item);
 		return
 	}else{

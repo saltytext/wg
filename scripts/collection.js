@@ -14,12 +14,57 @@ function collection(t){
 		updateStatus("You see a tree");
 		woodcutting(1);
 	}else if(t == 3){
-		//Gathering
-		updateResult("You are gathering");
+		//Gathering co = 0plant,1resource,2amount,3stop
+		co = ["","",0,0];
+		switch(rng(1,4)){
+			case 1:
+				co[0] = "Aquilla Plant";
+				co[1] = "Aqua Berry";
+				break;
+			case 2:
+				co[0] = "Golden Bush";
+				co[1] = "Nector";
+				break;
+			case 3:
+				co[0] = "Tangelo Shrub";
+				co[1] = "Tangelo";
+				break;
+			case 4:
+				co[0] = "Broadleaf";
+				co[1] = "Powder";
+				break;
+		}
 		gathering(1);
 	}else{
-		//Treasure chest
-		updateResult("You are lock picking");
+		//locked chest co = 0item, 1amount, 2difficulty, 3bashable
+		//Eventually this will be a random of all items in game
+		co = ["",0,0,false]
+		switch(rng(1,3)){
+			case 1:
+				co[0] = "Gold coins";
+				co[1] = rng(10,70);
+				co[2] = rng(1,2);
+				if(rng(1,100) <= 40){
+					co[3] = true;
+				}
+				break;
+			case 2:
+				co[0] = "Gem";
+				co[1] = rng(2,3);
+				co[2] = rng(1,3);
+				if(rng(1,100) >= (95 + co[2])){
+					co[3] = true;
+				}
+				break;
+			case 3:
+				co[0] = "worthless trash";
+				if(rng(1,100) <= 60){
+					co[3] = true;
+				}
+				break;
+		}
+		updateStatus("You stumbled across a locked chest at someone's camp");
+		console.log(co);
 		lockpicking(1);
 	}
 }
@@ -56,7 +101,7 @@ function mining(step, n){
 	updateActions('<input type="button" onclick="mining(3, rng(1,94))" value="Yes"><input type="button" onclick="mining(&apos;stop&apos;,co[2])" value="Stop">');
 	}else if(step == 3 && n >= 75){
 	//Collect a lot and can continue
-	co[2] = (co[1] + rng(2,4) + co[2]);
+	co[2] = (co[1] + rng(1,2) + co[2]);
 	co[3] = co[2];
 	updateStatus("You strike the earth and a huge chunk falls off!");
 	updateResult("You have collected " + co[2] + " " + co[0] + "!");
@@ -64,7 +109,7 @@ function mining(step, n){
 	updateActions('<input type="button" onclick="mining(3, rng(1,100))" value="Yes"><input type="button" onclick="mining(&apos;stop&apos;,co[2])" value="Stop">');
 	}else if(step == 3 && n >= 50){
 	//Collected some and can continue
-	co[2] = (co[1] + rng(1,2) + co[2]);
+	co[2] = (co[1] + co[2]);
 	co[3] = co[2];
 	updateStatus("You manage to collect some " + co[0] + "...");
 	updateResult("You currently have collected " + co[2] + " " + co[0]);
@@ -84,7 +129,7 @@ function mining(step, n){
 		updateStatus("You have destroyed some of the " + co[0]);
 		updateResult("You were able to salvage " + co[1] + " pieces.");
 		updateInfo("");
-		updateActions('<button onclick="addItem(player.inventory,[co[0];,co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
+		updateActions('<button onclick="addItem(player.inventory,[co[0],co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
 		}
 	}else if(step == "stop"){
 		updateStatus("");
@@ -146,27 +191,81 @@ function woodcutting(step, n){
 	}
 }
 
-function gathering(step){
+function gathering(step, n){
 	if(step == 1){
-	updateStatus("gathering step1");
-	updateActions('<input type="button" onclick="gathering(2)" value="Gather!">');
-	}else if(step ==2){
-	updateStatus("gathering step2");
-	updateActions('<input type="button" onclick="gathering(3)" value="Gather!">');
+	//initial discovery
+	updateStatus("You stop to smell the roses....");
+	updateResult("You see a " + co[0]);
+	updateActions('<input type="button" onclick="gathering(2,rng(1,2))" value="Gather!">');
+	}else if(step == 2){
+	//initial collection
+	co[2] = rng(1,2) + n;
+	co[3] = co[2];
+	updateStatus("Approaching the " + co[0] + "...");
+	updateResult("You can see " + co[2] + " " + co[1] + ".");
+	updateInfo('Do you want to search for more ' + co[1] + "?");
+	updateActions('<input type="button" onclick="gathering(3,rng(1,100))" value="Search!">');
+	}else if(step == 3 && n >= 60) {
+	//successful risk
+	co[2] = rng(2,3);
+	co[3] += co[2];
+	updateStatus("You search for a short time in the " + co[0]);
+	updateResult("and able to find " + co[2] + " more " + co[1] + ".");
+	updateInfo('Do you want to search for more ' + co[1] + "?<br>Or stop and keep " + co[3]);
+	updateActions('<input type="button" onclick="gathering(3,rng(1,2))" value="Search!"><input type="button" onclick="gathering(&apos;stop&apos;)" value="Stop">');
+	}else if(step == 3 && n >= 50) {
+	//unsuccessful risk losing some of them.
+	co[2] = rng(1,co[3]);
+	co[3] -= co[2];
+	updateStatus("You continue to search for a short time.. Ouch!");
+	updateResult("You reached your hand right into a POISONOUS THORN..");
+	updateInfo("You are forced to use " + co[2] + " " + co[1] + " to cure the wound.");
+	updateActions('<input type="button" onclick="gathering(&apos;stop&apos;,rng(1,2))" value="Stop">');
+	}else if(step == 3 && n >= 1) {
+	//unsuccessful risk losing some of them.
+	updateStatus("You spend a bit of time searching...");
+	updateResult("You find no more " + co[1]);
+	updateInfo("Feeling discouraged you decide to Stop");
+	updateActions('<input type="button" onclick="gathering(&apos;stop&apos;,rng(1,2))" value="Stop">');
 	}else{
-	updateStatus("gathering step3- click fight for now");
-	updateActions('');
+	updateStatus("");
+	updateResult("You collected " + co[3] + " " + co[1]);
+	updateInfo("");
+	updateActions('<button onclick="addItem(player.inventory,[co[1],co[3]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
 	}
 }
 
-function lockpicking(step){
+function lockpicking(step, g1, g2){
 	if(step == 1){
-	updateStatus("pick step1");
-	updateActions('<input type="button" onclick="lockpicking(2)" value="Attempt!">');
-	}else if(step ==2){
-	updateStatus("pick step2");
-	updateActions('<input type="button" onclick="lockpicking(3)" value="Attempt!">');
-	}else{
+	//initial bash or attempt decision
+	updateResult("No one is around...");
+	updateInfo("Do you want to attempt and pick the lock or bash it open?");
+	updateActions('<input type="button" onclick="lockpicking(2, 0)" value="Attempt!"><input type="button" onclick="lockpicking(3)" value="Bash!">');
+	}else if(step == 2){
+		if(g1 == 0){
+			updateStatus("You begin to study this lock");
+			updateResult("");
+			updateInfo("select the correct combination");
+			updateActions('1<input type="radio" onclick="lockpicking(2,1,1)" name="g1">2<input type="radio" onclick="lockpicking(2,1,2)" name="g1">3<input type="radio" onclick="lockpicking(2,1,3)" name="g1">');
+		}else if(g1 == 1 && g3 == rng(1,3)){
+			updateStatus("You enter you pick and beging to slowly turn");
+			updateResult("");
+			updateInfo("select the correct combination");
+			updateActions('1<input type="radio" onclick="lockpicking(2,1,1)" name="g1">2<input type="radio" onclick="lockpicking(2,1,2)" name="g1">3<input type="radio" onclick="lockpicking(2,1,3)" name="g1">');
+		}		
+	}else if(step == 3){
+	//bash decision
+		if(co[3]){
+			//it is bashable and you get to collect
+			updateStatus("With all of your might...");	
+			updateResult("You were able to bash the lock off!!");
+			updateActions('<button onclick="lockpicking(&apos;collect&apos;)">Collect</button>');
+		}else{
+			updateStatus("With all of your might...");	
+			updateResult("You broke the lock off, but the chest still remains closed...");
+			updateActions('<button onclick="window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
+		}
+	}else if(step == "collect"){
 	updateStatus("pick step3- click fight for now");
 	updateActions('');
 	}
