@@ -36,13 +36,14 @@ function collection(t){
 		}
 		gathering(1);
 	}else{
-		//locked chest co = 0item, 1amount, 2difficulty, 3bashable
+		//lock picking
+		//locked chest co = 0item, 1amount, 2difficulty, 3bashable, 4guessesR, 5correct, 6guess
 		//Eventually this will be a random of all items in game
-		co = ["",0,0,false]
+		co = ["",0,5,false,2,rng(1,12),0]
 		switch(rng(1,3)){
 			case 1:
-				co[0] = "Gold coins";
-				co[1] = rng(10,70);
+				co[0] = "Coin Purse";
+				co[1] = rng(2,10);
 				co[2] = rng(1,2);
 				if(rng(1,100) <= 40){
 					co[3] = true;
@@ -64,7 +65,6 @@ function collection(t){
 				break;
 		}
 		updateStatus("You stumbled across a locked chest at someone's camp");
-		console.log(co);
 		lockpicking(1);
 	}
 }
@@ -235,38 +235,101 @@ function gathering(step, n){
 	}
 }
 
-function lockpicking(step, g1, g2){
+function lockpicking(step, g1){
+	//step#, result
 	if(step == 1){
 	//initial bash or attempt decision
 	updateResult("No one is around...");
 	updateInfo("Do you want to attempt and pick the lock or bash it open?");
-	updateActions('<input type="button" onclick="lockpicking(2, 0)" value="Attempt!"><input type="button" onclick="lockpicking(3)" value="Bash!">');
-	}else if(step == 2){
-		if(g1 == 0){
-			updateStatus("You begin to study this lock");
-			updateResult("");
-			updateInfo("select the correct combination");
-			updateActions('1<input type="radio" onclick="lockpicking(2,1,1)" name="g1">2<input type="radio" onclick="lockpicking(2,1,2)" name="g1">3<input type="radio" onclick="lockpicking(2,1,3)" name="g1">');
-		}else if(g1 == 1 && g3 == rng(1,3)){
-			updateStatus("You enter you pick and beging to slowly turn");
-			updateResult("");
-			updateInfo("select the correct combination");
-			updateActions('1<input type="radio" onclick="lockpicking(2,1,1)" name="g1">2<input type="radio" onclick="lockpicking(2,1,2)" name="g1">3<input type="radio" onclick="lockpicking(2,1,3)" name="g1">');
-		}		
+	updateActions('<input type="button" onclick="lockpicking(2,0)" value="Attempt!"><input type="button" onclick="lockpicking(3)" value="Bash!">');
+	}else if(step == 2 && g1 != "win"){
+		if(co[4] == 0){
+			//guesses remaining == 0
+			updateStatus("You put your lockpick in the lock and begin to slowly turn it..");
+			updateResult("The lock does NOT OPEN");
+			updateInfo("The lock appears to be stuck...");
+			updateActions('<button onclick="window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
+		}else if(co[4] > 0){
+			//you have guesses remaining
+			co[4] -= 1;
+			if(g1 == "f"){
+				updateStatus("The lock does not budge... try again.");
+			}else{
+				updateStatus("You begin to study the lock");
+			}
+			updateResult("Select a number and direction to turn.");
+			updateInfo('<input type="button" value="12" id="12" onclick="buttonClicked(12)" style=""><input type="button" value="1" id="1" onclick="buttonClicked(1)" style=""><br><input type="button" value="11" id="11" onclick="buttonClicked(11)" style=""><button disabled>X</button><input type="button" value="2" id="2" onclick="buttonClicked(2)" style=""><br><input type="button" value="10" id="10" onclick="buttonClicked(10)" style=""><button disabled>X</button><button disabled>X</button><input type="button" value="3" id="3" onclick="buttonClicked(3)" style=""><br><input type="button" value="9" id="9" onclick="buttonClicked(9)" style=""><button disabled>X</button><input type="button" value="4" id="4" onclick="buttonClicked(4)" style=""><br><input type="button" value="8" id="8" onclick="buttonClicked(8)" style=""><input type="button" value="5" id="5" onclick="buttonClicked(5)" style=""><br><input type="button" value="7" id="7" onclick="buttonClicked(7)" style=""><input type="button" value="6" id="6" onclick="buttonClicked(6)" style="">');
+			updateActions('<br><button onclick="checkLockLeft()" title="Counter Clockwise">Turn CCW</button><button onclick="checkLockRight()" title="Clockwise">Turn CW</button>');
+		}
+	}else if(g1 == "win"){
+		updateStatus("You put your lockpick in the lock and start to turn it...");
+		updateResult("*CLICK* the lock OPENS!!! You open the chest.");
+		if(co[1] == 0){
+		updateInfo("Inside, you just see worthless trash...");
+		updateActions('<button onclick="storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore...</button>');
+		}else{
+		updateInfo("Inside you see a glorious glow and " + co[1] + " " + co[0] + "s!!!");
+		updateActions('<button onclick="addItem(player.inventory,[co[0],co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Grab and Run!</button>');
+		}
 	}else if(step == 3){
 	//bash decision
 		if(co[3]){
 			//it is bashable and you get to collect
 			updateStatus("With all of your might...");	
-			updateResult("You were able to bash the lock off!!");
-			updateActions('<button onclick="lockpicking(&apos;collect&apos;)">Collect</button>');
+			updateResult("You were able to bash the lock off!! You open quickly open the chest..");
+			if(co[1] == 0){
+				updateInfo("Inside you just see worthless trash...");
+				updateActions('<button onclick="storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore...</button>');
+			}else{
+				updateInfo("Inside you see " + co[1] + " " + co[0] + "s!!!");
+				updateActions('<button onclick="addItem(player.inventory,[co[0],co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Grab and Run!</button>');
+			}
 		}else{
 			updateStatus("With all of your might...");	
 			updateResult("You broke the lock off, but the chest still remains closed...");
+			updateInfo("");
 			updateActions('<button onclick="window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
 		}
 	}else if(step == "collect"){
 	updateStatus("pick step3- click fight for now");
 	updateActions('');
 	}
+}
+
+function buttonClicked(n) {
+	co[6] = n;
+	for(var i = 1; i != 13; i++){
+		if(i == n){
+		
+			document.getElementById(n).style="border-style:inset;";
+		}else{
+		document.getElementById(i).style="";
+		}
+	}
+}
+
+function checkLockLeft() {
+	for(var i = 0;i < co[2];i++){
+		var nn = co[6] - i;
+		if(nn <= 0){
+			nn += 12;
+		}
+		if(nn == co[5]){
+			return lockpicking(2,"win");
+		}
+	}
+	return lockpicking(2,"f");
+}
+
+function checkLockRight() {
+	for(var i = 0;i < co[2];i++){
+		var nn = co[6] + i;
+		if(nn > 12){
+			nn -= 12;
+		}
+		if(nn == co[5]){
+			return lockpicking(2,"win");
+		}
+	}
+	return lockpicking(2,"f");
 }
