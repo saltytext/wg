@@ -268,7 +268,7 @@ function lockpicking(step, g1){
 		updateInfo("Inside, you just see worthless trash...");
 		updateActions('<button onclick="storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore...</button>');
 		}else{
-		updateInfo("Inside you see a glorious glow and " + co[1] + " " + co[0] + "s!!!");
+		updateInfo("Inside you see a glorious glow of " + co[1] + " " + co[0] + "s!!!");
 		updateActions('<button onclick="addItem(player.inventory,[co[0],co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Grab and Run!</button>');
 		}
 	}else if(step == 3){

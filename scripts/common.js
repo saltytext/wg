@@ -1,9 +1,10 @@
 //Common functions
 var player = {};
 
+
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.18";
+	document.getElementById('version').innerHTML = "Version: 0.0.19";
 }
 
 function rng(min, max){
@@ -105,6 +106,15 @@ function updateImage(p){
 function updateActions(a){
 	document.getElementById('actions').innerHTML = a;
 }
+
+function createTown(name, location){
+	this.name = name;
+	this.location = location;
+}
+
+var Felsina = new createTown("Felsina",[0,0]);
+
+
 
 function pageLoad(){
 	updateNavVersion();
