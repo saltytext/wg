@@ -86,7 +86,7 @@ function encounter() {
 	generateMonster();
 	updateStatus();
 	updateResult("You encounter a " + monster[0] +"!");
-	updateInfo();
+	updateInfo("Monster: " + monster[0] + " - Health: " + monster[1]);
 	updateActions("<input type='button' value='Fight!!!' onclick='startFight()'><input type='button' value='Run...' onclick='leaveFight()'>");
 }
 
@@ -99,7 +99,7 @@ function startFight() {
 	}else{
 		updateResult('The ' + monster[0] + ' is looking at you!');
 	}
-	updateInfo();
+	updateInfo("Monster: " + monster[0] + " - Health: " + monster[1]);
 	updateActions("<input type='button' value='Attack' onclick='attack()'>");
 }
 
@@ -118,7 +118,7 @@ function attack() {
 		monster[1] -= player.damage;
 		updateStatus();
 		updateResult(player.name + ' attacks the ' + monster[0] +" for "+ player.damage + "!");
-		updateInfo();
+		updateInfo("Monster: " + monster[0] + " - Health: " + monster[1]);
 		updateActions("<input type='button' value='Continue' onclick='healthTest()'>");
 		player.turn = false;
 	}else{
@@ -127,7 +127,7 @@ function attack() {
 		player.health -= monster[7];
 		updateStatus();
 		updateResult(monster[0] + ' attacks you for '+ monster[7] + "!");
-		updateInfo();
+		updateInfo("Monster: " + monster[0] + " - Health: " + monster[1]);
 		updateActions("<input type='button' value='Continue' onclick='healthTest()'>");
 		player.turn = true;
 	}

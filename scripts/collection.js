@@ -19,19 +19,19 @@ function collection(t){
 		switch(rng(1,4)){
 			case 1:
 				co[0] = "Aquilla Plant";
-				co[1] = "Aqua Berry";
+				co[1] = 4;//Aqua Berry
 				break;
 			case 2:
 				co[0] = "Golden Bush";
-				co[1] = "Nector";
+				co[1] = 5;//Nector
 				break;
 			case 3:
 				co[0] = "Tangelo Shrub";
-				co[1] = "Tangelo";
+				co[1] = 6;//Tangelo
 				break;
 			case 4:
 				co[0] = "Broadleaf";
-				co[1] = "Powder";
+				co[1] = 7;//Powder
 				break;
 		}
 		gathering(1);
@@ -42,7 +42,7 @@ function collection(t){
 		co = ["",0,5,false,2,rng(1,12),0]
 		switch(rng(1,3)){
 			case 1:
-				co[0] = "Coin Purse";
+				co[0] = 8;//coin purse
 				co[1] = rng(2,10);
 				co[2] = rng(1,2);
 				if(rng(1,100) <= 40){
@@ -50,7 +50,7 @@ function collection(t){
 				}
 				break;
 			case 2:
-				co[0] = "Gem";
+				co[0] = 2;//Gem
 				co[1] = rng(2,3);
 				co[2] = rng(1,3);
 				if(rng(1,100) >= (95 + co[2])){
@@ -79,11 +79,11 @@ function mining(step, n){
 	updateStatus("You begin to prospect and....");
 	co[1] = rng(1,2);
 	if(n == 1){
-		co[0] = "Iron";
+		co[0] = 3;//Iron
 		updateResult("and identify some IRON!!");
 		updateInfo("Click Mine to gather the iron.");
 	}else{
-		co[0] = "Stone";
+		co[0] = 1;//Stone
 		updateResult("it looks to just be STONE.");
 		updateInfo("Click Mine to gather some stone.");
 	}
@@ -91,29 +91,29 @@ function mining(step, n){
 	//note updateactions should be onclick="mining(3,rng(1,100)):
 	}else if(step == 3 && n >= 95){
 	//Collected some and found a GEM! can continue
-	addItem(player.inventory,["Gem",1]);
+	addItem(player.inventory,[2,1]);
 	storeObject("player");
 	co[2] = (co[1] + co[2]);
 	co[3] = co[2];
 	updateStatus("Great Success!!! You have found a Rare Gem, and stop to grab it!<br>");
-	updateResult("Additionally you collected " + co[2] + " " + co[0] + "!");
-	updateInfo("You can see a bit more " + co[0] + ". Continue mining?");
+	updateResult("Additionally you collected " + co[2] + " " + itemInfo(co[0],'name',item) +"!");
+	updateInfo("You can see a bit more " + itemInfo(co[0],'name',item) + ". Continue mining?");
 	updateActions('<input type="button" onclick="mining(3, rng(1,94))" value="Yes"><input type="button" onclick="mining(&apos;stop&apos;,co[2])" value="Stop">');
 	}else if(step == 3 && n >= 75){
 	//Collect a lot and can continue
 	co[2] = (co[1] + rng(1,2) + co[2]);
 	co[3] = co[2];
 	updateStatus("You strike the earth and a huge chunk falls off!");
-	updateResult("You have collected " + co[2] + " " + co[0] + "!");
-	updateInfo("You can see a bit more " + co[0] + ". Continue mining?");
+	updateResult("You have collected " + co[2] + " " + itemInfo(co[0],'name',item) + "!");
+	updateInfo("You can see a bit more " + itemInfo(co[0],'name',item) + ". Continue mining?");
 	updateActions('<input type="button" onclick="mining(3, rng(1,100))" value="Yes"><input type="button" onclick="mining(&apos;stop&apos;,co[2])" value="Stop">');
 	}else if(step == 3 && n >= 50){
 	//Collected some and can continue
 	co[2] = (co[1] + co[2]);
 	co[3] = co[2];
-	updateStatus("You manage to collect some " + co[0] + "...");
-	updateResult("You currently have collected " + co[2] + " " + co[0]);
-	updateInfo("You can see a bit more " + co[0] + ". Continue mining?");
+	updateStatus("You manage to collect some " + itemInfo(co[0],'name',item) + "...");
+	updateResult("You currently have collected " + co[2] + " " + itemInfo(co[0],'name',item));
+	updateInfo("You can see a bit more " + itemInfo(co[0],'name',item) + ". Continue mining?");
 	updateActions('<input type="button" onclick="mining(3, rng(1,100))" value="Yes"><input type="button" onclick="mining(&apos;stop&apos;,co[2])" value="Stop">');
 	}else if(step == 3 && n <= 49){
 	//risky time
@@ -121,19 +121,19 @@ function mining(step, n){
 		if(n2 != 1){
 		//5aLost get nothing.
 		updateStatus("You swing a strong blow with your pickaxe.");
-		updateResult("You destroyed all of your existing " + co[0] +".");
+		updateResult("You destroyed all of your existing " + itemInfo(co[0],'name',item) +".");
 		updateInfo("");
 		updateActions('<a href="explore.html"><button>Explore</button></a>'); //you do not get anything.
 		}else{
 		//5bLost but keep initial winning of c1
-		updateStatus("You have destroyed some of the " + co[0]);
+		updateStatus("You have destroyed some of the " + itemInfo(co[0],'name',item));
 		updateResult("You were able to salvage " + co[1] + " pieces.");
 		updateInfo("");
 		updateActions('<button onclick="addItem(player.inventory,[co[0],co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
 		}
 	}else if(step == "stop"){
 		updateStatus("");
-		updateResult("You have collected " + co[3] + " " + co[0] + ".");
+		updateResult("You have collected " + co[3] + " " + itemInfo(co[0],'name',item) + ".");
 		updateInfo("");
 		updateActions('<button onclick="addItem(player.inventory,[co[0],co[3]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
 	}
@@ -166,7 +166,7 @@ function woodcutting(step, n){
 	//meh you get initial amount.
 	updateStatus("You did not gain any pieces...");
 	updateResult("You have received " + co[1] + " wood.");
-	updateActions('<button onclick="addItem(player.inventory,[&apos;Wood&apos;,co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
+	updateActions('<button onclick="addItem(player.inventory,[0,co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
 	}else if(step == 3 && n <= 49){
 	//5Lost gamble risk. Time to pay...?
 	n2 = rng(1,3);
@@ -181,13 +181,13 @@ function woodcutting(step, n){
 		updateStatus("You have destroyed some of the wood.");
 		updateResult("You were able to salvage " + co[1] + " pieces.");
 		updateInfo("");
-		updateActions('<button onclick="addItem(player.inventory,[&apos;Wood&apos;,co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
+		updateActions('<button onclick="addItem(player.inventory,[0,co[1]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
 		}
 	}else if(step == "stop"){
 		updateStatus("");
 		updateResult("You have collected " + co[3] + " wood.");
 		updateInfo("");
-		updateActions('<button onclick="addItem(player.inventory,[&apos;Wood&apos;,co[3]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
+		updateActions('<button onclick="addItem(player.inventory,[0,co[3]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
 	}
 }
 

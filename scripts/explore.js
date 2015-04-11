@@ -6,7 +6,8 @@ function exploreOptions(o) {
 	if(locationAvailable >= 0){
 		updateStatus('You are currently at (' + player.location[0] + ", " + player.location[1] + ").<br>");
 		updateInfo("<br>You see a " + locations[locationAvailable][3] + ",<br>Do you want to enter " + locations[locationAvailable][0] + "?<br>");
-		updateActions('<input type="button" onclick="movePlayerY(1); exploreOptions(rng(1,5))" value="North"><br><input type="button" onclick="movePlayerX(-1); exploreOptions(rng(1,5))" value="West"><input type="button" onclick="window.open(&apos;town.html&apos;,&apos;_self&apos;)" value="Enter"><input type="button" onclick="movePlayerX(1); exploreOptions(rng(1,5))" value="East"><br><input type="button" onclick="movePlayerY(-1); exploreOptions(rng(1,5))" value="South">');
+		updateResult('');
+		updateActions('<br><input type="button" onclick="movePlayerY(1); exploreOptions(rng(1,5))" value="North"><br><input type="button" onclick="movePlayerX(-1); exploreOptions(rng(1,5))" value="West"><input type="button" onclick="window.open(&apos;town.html&apos;,&apos;_self&apos;)" value="Enter"><input type="button" onclick="movePlayerX(1); exploreOptions(rng(1,5))" value="East"><br><input type="button" onclick="movePlayerY(-1); exploreOptions(rng(1,5))" value="South">');
 	}else{
 		if(o == 5){
 			updateResult('<br>You see the shadow of a figure...');
@@ -28,6 +29,7 @@ function explore() {
 	if(locationAvailable >= 0){
 		updateStatus('You are currently at (' + player.location[0] + ", " + player.location[1] + ").<br>");
 		updateInfo("<br>You see a " + locations[locationAvailable][3] + ",<br>Do you want to enter " + locations[locationAvailable][0] + "?<br>");
+		updateResult('');
 		updateActions('<br><input type="button" onclick="movePlayerY(1); exploreOptions(rng(1,5))" value="North"><br><input type="button" onclick="movePlayerX(-1); exploreOptions(rng(1,5))" value="West"><input type="button" onclick="window.open(&apos;town.html&apos;,&apos;_self&apos;)" value="Enter"><input type="button" onclick="movePlayerX(1); exploreOptions(rng(1,5))" value="East"><br><input type="button" onclick="movePlayerY(-1); exploreOptions(rng(1,5))" value="South">');
 	}else{
 		updateStatus('You are currently at (' + player.location[0] + ", " + player.location[1] + ").");

@@ -1,10 +1,9 @@
 //Common functions
 var player = {};
 
-
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.19";
+	document.getElementById('version').innerHTML = "Version: 0.0.20";
 }
 
 function rng(min, max){
@@ -38,7 +37,7 @@ function createPlayer(name){
 	// player array= 0name, 1health, 2attack, 3defense, 4speed, 5level, 6exp, 7dmg, 8turn, 9maxHP, 10pos, 11backpack
 		player = {name: name, health: 10, attack: 10, defense: 10, speed: 7, level: 1, exp: 0, damage: 0, turn: false, maxHealth: 10, location: [0,0], inventory: []};
 		storeObject("player");
-		window.open("explore.html", "_self");
+		window.open("town.html", "_self");
 	}
 }
 
@@ -59,6 +58,18 @@ function addItem(storage, item){
 			}
 		}
 	}
+}
+
+function showInventory() {
+	var list = "<br>Current Player Inventory:";
+	if(player.inventory.length == 0){
+		list += '<br>Your inventory is empty';
+	}else{
+		for(var i = 0; i < player.inventory.length; i++){
+			list += "<br>" + player.inventory[i][0] + " " + player.inventory[i][1];
+			}
+	}
+	return list;
 }
 
 function loadPlayer(){
@@ -92,10 +103,6 @@ function updateResult(r){
 }
 
 function updateInfo(i){
-	//i == undefined shows monster status by default.
-	if(i == undefined){
-		i = "Monster: " + monster[0] + " - Health: " + monster[1];
-	}
 	document.getElementById('info').innerHTML = i;
 }
 
@@ -113,8 +120,6 @@ function createTown(name, location){
 }
 
 var Felsina = new createTown("Felsina",[0,0]);
-
-
 
 function pageLoad(){
 	updateNavVersion();
