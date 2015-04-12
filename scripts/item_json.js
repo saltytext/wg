@@ -1,5 +1,5 @@
 function itemInfo(id,attribute,source){
-	//example usage: getItem(0,"name",item);
+	//example usage: itemInfo(0,"name",item);
 	return source[id][attribute];
 }
 

@@ -3,7 +3,7 @@ var player = {};
 
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.20";
+	document.getElementById('version').innerHTML = "Version: 0.0.21";
 }
 
 function rng(min, max){
@@ -60,13 +60,31 @@ function addItem(storage, item){
 	}
 }
 
+function removeItem(storage, item){
+	if(item[1] == 0){
+		return
+	}else{
+		for(var i = 0;i <= storage.length;i++){
+			if(storage[i][0] == item[0]){
+				if(storage[i][1] - item[1] <= 0){
+					storage.splice(i,1);
+					return
+				}else{
+					storage[i][1] -= item[1];
+					return
+				}
+			}
+		}
+	}
+}
+
 function showInventory() {
 	var list = "<br>Current Player Inventory:";
 	if(player.inventory.length == 0){
 		list += '<br>Your inventory is empty';
 	}else{
 		for(var i = 0; i < player.inventory.length; i++){
-			list += "<br>" + player.inventory[i][0] + " " + player.inventory[i][1];
+			list += "<br>" + itemInfo(player.inventory[i][0],'name',item) + " " + player.inventory[i][1];
 			}
 	}
 	return list;
