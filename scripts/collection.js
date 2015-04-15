@@ -202,16 +202,16 @@ function gathering(step, n){
 	co[2] = rng(1,2) + n;
 	co[3] = co[2];
 	updateStatus("Approaching the " + co[0] + "...");
-	updateResult("You can see " + co[2] + " " + co[1] + ".");
-	updateInfo('Do you want to search for more ' + co[1] + "?");
+	updateResult("You can see " + co[2] + " " + itemInfo(co[1],'name',item) + ".");
+	updateInfo('Do you want to search for more ' + itemInfo(co[1],'name',item) + "?");
 	updateActions('<input type="button" onclick="gathering(3,rng(1,100))" value="Search!">');
 	}else if(step == 3 && n >= 60) {
 	//successful risk
 	co[2] = rng(2,3);
 	co[3] += co[2];
 	updateStatus("You search for a short time in the " + co[0]);
-	updateResult("and able to find " + co[2] + " more " + co[1] + ".");
-	updateInfo('Do you want to search for more ' + co[1] + "?<br>Or stop and keep " + co[3]);
+	updateResult("and able to find " + co[2] + " more " + itemInfo(co[1],'name',item) + ".");
+	updateInfo('Do you want to search for more ' + itemInfo(co[1],'name',item) + "?<br>Or stop and keep " + co[3]);
 	updateActions('<input type="button" onclick="gathering(3,rng(1,2))" value="Search!"><input type="button" onclick="gathering(&apos;stop&apos;)" value="Stop">');
 	}else if(step == 3 && n >= 50) {
 	//unsuccessful risk losing some of them.
@@ -219,17 +219,17 @@ function gathering(step, n){
 	co[3] -= co[2];
 	updateStatus("You continue to search for a short time.. Ouch!");
 	updateResult("You reached your hand right into a POISONOUS THORN..");
-	updateInfo("You are forced to use " + co[2] + " " + co[1] + " to cure the wound.");
+	updateInfo("You are forced to use " + co[2] + " " + itemInfo(co[1],'name',item) + " to cure the wound.");
 	updateActions('<input type="button" onclick="gathering(&apos;stop&apos;,rng(1,2))" value="Stop">');
 	}else if(step == 3 && n >= 1) {
 	//unsuccessful risk losing some of them.
 	updateStatus("You spend a bit of time searching...");
-	updateResult("You find no more " + co[1]);
+	updateResult("You find no more " + itemInfo(co[1],'name',item));
 	updateInfo("Feeling discouraged you decide to Stop");
 	updateActions('<input type="button" onclick="gathering(&apos;stop&apos;,rng(1,2))" value="Stop">');
 	}else{
 	updateStatus("");
-	updateResult("You collected " + co[3] + " " + co[1]);
+	updateResult("You collected " + co[3] + " " + itemInfo(co[1],'name',item));
 	updateInfo("");
 	updateActions('<button onclick="addItem(player.inventory,[co[1],co[3]]);storeObject(&apos;player&apos;);window.open(&apos;explore.html&apos;, &apos;_self&apos;);">Explore</button>');
 	}

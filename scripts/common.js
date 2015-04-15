@@ -2,8 +2,13 @@
 var player = {};
 
 function updateNavVersion(){
+<<<<<<< HEAD
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul><li><a href="combat.html">New </a></li>'
 	document.getElementById('version').innerHTML = "Version: 0.0.23";
+=======
+	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
+	document.getElementById('version').innerHTML = "Version: 0.0.22";
+>>>>>>> 36e975607ca1765b1ef2c0b4e1bef36bb387ea59
 }
 
 function rng(min, max){
@@ -41,32 +46,13 @@ function createPlayer(name){
 	}
 }
 
-function addItem(storage, item){
-	if(item[1] == 0){
-		return
-	}else if(storage.length == 0){
-		storage.push(item);
-		return
-	}else{
-		for(var i = 0;i <= storage.length;i++){
-			if(storage[i] == undefined){
-				storage.push(item);
-				return
-			}else if(storage[i][0] == item[0]){
-				storage[i][1] += item[1];
-				return
-			}
-		}
-	}
-}
-
 function showInventory() {
 	var list = "<br>Current Player Inventory:";
 	if(player.inventory.length == 0){
 		list += '<br>Your inventory is empty';
 	}else{
 		for(var i = 0; i < player.inventory.length; i++){
-			list += "<br>" + player.inventory[i][0] + " " + player.inventory[i][1];
+			list += "<br>" + itemInfo(player.inventory[i][0],'name',item) + " " + player.inventory[i][1];
 			}
 	}
 	return list;

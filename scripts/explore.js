@@ -20,6 +20,7 @@ function exploreOptions(o) {
 		else{
 			updateInfo("");
 			updateResult('<br>You found nothing<br>Take a <a href="player.html">rest...</a>');
+			updateActions('<br><input type="button" onclick="movePlayerY(1); exploreOptions(rng(1,5))" value="North"><br><input type="button" onclick="movePlayerX(-1); exploreOptions(rng(1,5))" value="West"><input type="button" onclick="movePlayerX(1); exploreOptions(rng(1,5))" value="East"><br><input type="button" onclick="movePlayerY(-1); exploreOptions(rng(1,5))" value="South">');
 		}
 	}
 }
