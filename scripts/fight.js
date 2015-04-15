@@ -36,6 +36,28 @@ function giveRewards() {
 	storeObject("player");
 }
 
+function itemDrop(n) {
+	if(n >= 6){
+		ir = [rng(8,11),rng(1,2)];
+		updateResult('You search the ' + monster[0] + '.');
+		updateInfo('You find ' + ir[1] + ' ' + itemInfo(ir[0],'name',item) + '<br>It is added to your inventory');
+		updateActions('<a href="explore.html"><button>Explore</button></a>');
+		addItem(player.inventory, ir);
+		storeObject("player");
+	}else if(n > 1){
+		ir = [12,rng(5,15)];
+		updateResult('You search the ' + monster[0] + '.');
+		updateInfo('You find ' + ir[1] + ' ' + itemInfo(ir[0],'name',item) + '<br>It is added to your inventory');
+		updateActions('<a href="explore.html"><button>Explore</button></a>');
+		addItem(player.inventory, ir);
+		storeObject("player");	
+	}else{
+		updateResult('You search the ' + monster[0] + '.');
+		updateInfo('You find nothing useful on it.');
+		updateActions('<a href="explore.html"><button>Explore</button></a>');
+	}
+}
+
 function resetHealth() {
 	player.health = player.maxHealth;
 	storeObject("player");
@@ -63,8 +85,8 @@ function healthTest(){
 		giveRewards();
 		updateStatus();
 		updateResult("That " + monster[0] + " was no match for you!<br>You have defeated the " + monster[0] + "!");
-		updateInfo("You are the best!");
-		updateActions('<a href="explore.html"><button>Explore</button></a>');
+		updateInfo("Search the " + monster[0] + "'s corpse?");
+		updateActions('<input type="button" value="Search!" onclick="itemDrop(rng(1,10))">');
 		levelTest();
 		resetHealth();
 	}else{
