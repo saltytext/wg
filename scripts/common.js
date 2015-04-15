@@ -2,13 +2,8 @@
 var player = {};
 
 function updateNavVersion(){
-<<<<<<< HEAD
-	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul><li><a href="combat.html">New </a></li>'
-	document.getElementById('version').innerHTML = "Version: 0.0.23";
-=======
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.22";
->>>>>>> 36e975607ca1765b1ef2c0b4e1bef36bb387ea59
+	document.getElementById('version').innerHTML = "Version: 0.0.24";
 }
 
 function rng(min, max){

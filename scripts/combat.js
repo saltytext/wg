@@ -18,18 +18,18 @@ var player = {
 		return (this.defense);
 	},
 	inRange: function(){
-		if(Math.abs(player.position[0] - monster.position[0]) + Math.abs(player.position[1] - monster.position[1]) === player.range){
+		if(Math.abs(Math.sqrt( Math.pow((player.position[0]-monster.position[0]), 2) + Math.pow((player.position[1]-monster.position[1]), 2) )) <= player.range){
 			return true
 		}else{
 			return false
 		}
 	},
-	moveY: function(p){
+	moveX: function(p){
 		drawField('',this.position);
 		this.position[0] += p;
 		drawField('p',this.position);
 	},
-	moveX: function(p){
+	moveY: function(p){
 		drawField('',this.position);
 		this.position[1] += p;
 		drawField('p',this.position);
@@ -42,7 +42,7 @@ var monster = {
 	speed: 10, 
 	damage: 20, 
 	defense: 10, 
-	range: 2,
+	range: 1,
 	accuracy: 40,
 	block: 10,
 	position: undefined,
@@ -53,7 +53,7 @@ var monster = {
 		return (this.defense);
 	},
 	inRange: function(){
-		if(Math.abs(monster.position[0] - player.position[0]) + Math.abs(monster.position[1] - player.position[1]) === monster.range){
+		if(Math.abs(Math.sqrt( Math.pow((monster.position[0]-player.position[0]), 2) + Math.pow((monster.position[1]-player.position[1]), 2) )) <= monster.range){
 			return true
 		}else{
 			return false
@@ -62,33 +62,27 @@ var monster = {
 	moveX: function(p){
 		drawField('',this.position);
 		this.position[0] += p;
-		drawField('p',this.position);
+		drawField('m',this.position);
 	},
 	moveY: function(p){
 		drawField('',this.position);
 		this.position[1] += p;
-		drawField('p',this.position);
+		drawField('m',this.position);
 
 	}
 };
 
-var field = [
-['','','','',''],
-['','','','',''],
-['','','','',''],
-['','','','',''],
-['','','','',''],
-['','','','',''],
-];
+//debug version var field = [['00','01','02','03','04','05'],['10','11','12','13','14','15'],['20','21','22','23','24','25'],['30','31','32','33','34','35'],['40','41','42','43','44','45']];
+var field = [['','','','','',''],['','','','','',''],['','','','','',''],['','','','','',''],['','','','','','']];
 
 function showField(){
 	temp = '<table align="center">'+
-	'<tr><td>'+field[5][0]+'</td><td>'+field[5][1]+'</td><td>'+field[5][2]+'</td><td>'+field[5][3]+'</td><td>'+field[5][4]+'</td></tr>'+
-	'<tr><td>'+field[4][0]+'</td><td>'+field[4][1]+'</td><td>'+field[4][2]+'</td><td>'+field[4][3]+'</td><td>'+field[4][4]+'</td></tr>'+
-	'<tr><td>'+field[3][0]+'</td><td>'+field[3][1]+'</td><td>'+field[3][2]+'</td><td>'+field[3][3]+'</td><td>'+field[3][4]+'</td></tr>'+
-	'<tr><td>'+field[2][0]+'</td><td>'+field[2][1]+'</td><td>'+field[2][2]+'</td><td>'+field[2][3]+'</td><td>'+field[2][4]+'</td></tr>'+
-	'<tr><td>'+field[1][0]+'</td><td>'+field[1][1]+'</td><td>'+field[1][2]+'</td><td>'+field[1][3]+'</td><td>'+field[1][4]+'</td></tr>'+
-	'<tr><td>'+field[0][0]+'</td><td>'+field[0][1]+'</td><td>'+field[0][2]+'</td><td>'+field[0][3]+'</td><td>'+field[0][4]+'</td></tr>'+
+	'<tr>'+'<td>'+field[0][5]+'</td>'+'<td>'+field[1][5]+'</td>'+'<td>'+field[2][5]+'</td>'+'<td>'+field[3][5]+'</td>'+'<td>'+field[4][5]+'</td>'+'</tr>'+
+	'<tr>'+'<td>'+field[0][4]+'</td>'+'<td>'+field[1][4]+'</td>'+'<td>'+field[2][4]+'</td>'+'<td>'+field[3][4]+'</td>'+'<td>'+field[4][4]+'</td>'+'</tr>'+
+	'<tr>'+'<td>'+field[0][3]+'</td>'+'<td>'+field[1][3]+'</td>'+'<td>'+field[2][3]+'</td>'+'<td>'+field[3][3]+'</td>'+'<td>'+field[4][3]+'</td>'+'</tr>'+
+	'<tr>'+'<td>'+field[0][2]+'</td>'+'<td>'+field[1][2]+'</td>'+'<td>'+field[2][2]+'</td>'+'<td>'+field[3][2]+'</td>'+'<td>'+field[4][2]+'</td>'+'</tr>'+
+	'<tr>'+'<td>'+field[0][1]+'</td>'+'<td>'+field[1][1]+'</td>'+'<td>'+field[2][1]+'</td>'+'<td>'+field[3][1]+'</td>'+'<td>'+field[4][1]+'</td>'+'</tr>'+
+	'<tr>'+'<td>'+field[0][0]+'</td>'+'<td>'+field[1][0]+'</td>'+'<td>'+field[2][0]+'</td>'+'<td>'+field[3][0]+'</td>'+'<td>'+field[4][0]+'</td>'+'</tr>'+
 	'</table>';
 	document.getElementById('field').innerHTML = temp;
 }
@@ -99,26 +93,45 @@ function drawField(e,p){
 	showField();
 }
 
+function checkUp(){
+	list = '';
+	if(player.position[1] + 1 != 6 && (!(player.position[0] == monster.position[0] && player.position[1] +1 == monster.position[1]) )){
+		return list += '<button onclick="player.moveY(1)">U</button>';
+	}else{
+		return list += '<button onclick="player.moveY(1)" disabled>U</button>';
+	}
+}
+
 function checkLeft(){
 	list = '';
-	if(player.position[1] -1 != 0){
-		//can move Left
-		return list += '<button onclick="player.moveX(-1)">Left</button>';
+	if((player.position[0] != 0) && (!(player.position[0] -1 == monster.position[0] && player.position[1] == monster.position[1]) )){
+		return list += '<button onclick="player.moveX(-1)">L</button>';
+	}else{
+		return list += '<button onclick="player.moveY(1)" disabled>L</button>';
 	}
-	return list;
 }
 
 function checkRight(){
 	list = '';
-	if(player.position[1] + 1 >= 4){
-		//can move Forward
-		return list += '<button onclick="player.moveX(1)">Right</button>';
+	if(player.position[0] + 1 != 5 && (!(player.position[0] +1 == monster.position[0] && player.position[1] == monster.position[1]) )){
+
+		return list += '<button onclick="player.moveX(1)">R</button>';
+	}else{
+		return list += '<button onclick="player.moveY(1)" disabled>R</button>';
 	}
-	return list;
+}
+
+function checkDown(){
+	list = '';
+	if(player.position[1] != 0 && (!(player.position[0] == monster.position[0] && player.position[1] -1 == monster.position[1]) )){
+		return list += '<button onclick="player.moveY(-1)">D</button>';
+	}else{
+		return list += '<button onclick="player.moveY(1)" disabled>D</button>';
+	}
 }
 
 function getMoves(){
-	list = checkLeft() + '<br>' + checkRight();
+	list = checkUp() + '<br>' + checkLeft() + checkRight() + '<br>' + checkDown();
 	return list;
 }
 //0phase,1fastest,2rangeDifference,3TurnRatio,4current,5temp
@@ -158,20 +171,18 @@ function getTurnRatio(){
 
 function initPlayerPos(){
 	if(player.range === 1){
-		player.position = [3,2];
+		player.position = [2,2];
 	}else{
-		player.position = [4,2];
+		player.position = [2,1];
 	}
-	drawField('p',player.position);
 }
 
 function initMonsterPos(){
 	if(monster.range === 1){
-		monster.position = [2,2];
+		monster.position = [2,3];
 	}else{
-		monster.position = [1,2];
+		monster.position = [2,4];
 	}
-	drawField('m',monster.position);
 }
 
 function combatSetup(){
@@ -189,7 +200,8 @@ function combatSetup(){
 function combatTurn(){
 	combatSetup();
 	showPhase();
-	showField();
+	drawField('p',player.position);
+	drawField('m',monster.position);
 	showResults();
 	showMoves();
 }
