@@ -3,7 +3,7 @@ var player = {};
 
 function updateNavVersion(){
 	document.getElementById('nav').innerHTML = '<ul><li><a href="explore.html">Explore</a></li><li><a href="fight.html">fight</a></li><li><a href="collection.html">Collection</a></li></ul>'
-	document.getElementById('version').innerHTML = "Version: 0.0.24";
+	document.getElementById('version').innerHTML = "Version: 0.0.25";
 }
 
 function rng(min, max){

@@ -45,6 +45,7 @@ var monster = {
 	range: 1,
 	accuracy: 40,
 	block: 10,
+	state: undefined,//need to add in the monster brain here
 	position: undefined,
 	attack: function(){
 		return (this.damage);
@@ -132,6 +133,8 @@ function checkDown(){
 
 function getMoves(){
 	list = checkUp() + '<br>' + checkLeft() + checkRight() + '<br>' + checkDown();
+	//this line for monster movement testing.
+	list += '<br><br><button onclick="moveCloser()">Monster Closer</button><button onclick="moveFarther()">Monster Farther</button>'
 	return list;
 }
 //0phase,1fastest,2rangeDifference,3TurnRatio,4current,5temp
