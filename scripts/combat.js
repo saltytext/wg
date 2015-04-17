@@ -42,10 +42,10 @@ var monster = {
 	speed: 10, 
 	damage: 20, 
 	defense: 10, 
-	range: 1,
+	range: 2,
 	accuracy: 40,
 	block: 10,
-	state: undefined,//need to add in the monster brain here
+	state: "Good",//need to add in the monster brain here
 	position: undefined,
 	attack: function(){
 		return (this.damage);
@@ -64,6 +64,7 @@ var monster = {
 		drawField('',this.position);
 		this.position[0] += p;
 		drawField('m',this.position);
+		
 	},
 	moveY: function(p){
 		drawField('',this.position);
@@ -77,7 +78,7 @@ var monster = {
 var field = [['','','','','',''],['','','','','',''],['','','','','',''],['','','','','',''],['','','','','','']];
 
 function showField(){
-	temp = '<table align="center">'+
+	temp = '<table class="field" align="center">'+
 	'<tr>'+'<td>'+field[0][5]+'</td>'+'<td>'+field[1][5]+'</td>'+'<td>'+field[2][5]+'</td>'+'<td>'+field[3][5]+'</td>'+'<td>'+field[4][5]+'</td>'+'</tr>'+
 	'<tr>'+'<td>'+field[0][4]+'</td>'+'<td>'+field[1][4]+'</td>'+'<td>'+field[2][4]+'</td>'+'<td>'+field[3][4]+'</td>'+'<td>'+field[4][4]+'</td>'+'</tr>'+
 	'<tr>'+'<td>'+field[0][3]+'</td>'+'<td>'+field[1][3]+'</td>'+'<td>'+field[2][3]+'</td>'+'<td>'+field[3][3]+'</td>'+'<td>'+field[4][3]+'</td>'+'</tr>'+
@@ -97,7 +98,7 @@ function drawField(e,p){
 function checkUp(){
 	list = '';
 	if(player.position[1] + 1 != 6 && (!(player.position[0] == monster.position[0] && player.position[1] +1 == monster.position[1]) )){
-		return list += '<button onclick="player.moveY(1)">U</button>';
+		return list += '<button onclick="player.moveY(1);monsterTurn()">U</button>';
 	}else{
 		return list += '<button onclick="player.moveY(1)" disabled>U</button>';
 	}
@@ -106,7 +107,7 @@ function checkUp(){
 function checkLeft(){
 	list = '';
 	if((player.position[0] != 0) && (!(player.position[0] -1 == monster.position[0] && player.position[1] == monster.position[1]) )){
-		return list += '<button onclick="player.moveX(-1)">L</button>';
+		return list += '<button onclick="player.moveX(-1);monsterTurn()">L</button>';
 	}else{
 		return list += '<button onclick="player.moveY(1)" disabled>L</button>';
 	}
@@ -116,7 +117,7 @@ function checkRight(){
 	list = '';
 	if(player.position[0] + 1 != 5 && (!(player.position[0] +1 == monster.position[0] && player.position[1] == monster.position[1]) )){
 
-		return list += '<button onclick="player.moveX(1)">R</button>';
+		return list += '<button onclick="player.moveX(1);monsterTurn()">R</button>';
 	}else{
 		return list += '<button onclick="player.moveY(1)" disabled>R</button>';
 	}
@@ -125,18 +126,27 @@ function checkRight(){
 function checkDown(){
 	list = '';
 	if(player.position[1] != 0 && (!(player.position[0] == monster.position[0] && player.position[1] -1 == monster.position[1]) )){
-		return list += '<button onclick="player.moveY(-1)">D</button>';
+		return list += '<button onclick="player.moveY(-1);monsterTurn()">D</button>';
 	}else{
 		return list += '<button onclick="player.moveY(1)" disabled>D</button>';
 	}
 }
 
+function checkAttack(){
+	if(player.inRange()){
+		return '<button>Attack</button>';
+	}else{
+		return '<button disabled>Attack</button>';
+	}
+}
+
 function getMoves(){
-	list = checkUp() + '<br>' + checkLeft() + checkRight() + '<br>' + checkDown();
-	//this line for monster movement testing.
-	list += '<br><br><button onclick="moveCloser()">Monster Closer</button><button onclick="moveFarther()">Monster Farther</button>'
+	list = '<div id="movement">' + checkUp() + '<br>' + checkLeft() + checkRight() + '<br>' + checkDown() + '</div><br>';
+	list += '<div id="actions">' + checkAttack() + '</div>';
+	//this line for monster movement testing.	list += '<br><br><button onclick="moveCloser()">Monster Closer</button><button onclick="moveFarther()">Monster Farther</button>'
 	return list;
 }
+
 //0phase,1fastest,2rangeDifference,3TurnRatio,4current,5temp
 var combatSettings = [1];
 var combatLog = '';
@@ -145,17 +155,17 @@ function getFastest(){
 	//determine who has higher speed
 	if(player.speed > monster.speed){
 			combatSettings[1] = 'player';
-			combatLog = 'The Player is faster and will have the first attack!<br>';
+			combatLog = 'The Player is faster and will have the first attack!\n';
 		}else if(monster.speed > player.speed){
 			combatSettings[1] = 'monster';
-			combatLog = 'The Monster is faster and will have the first attack!<br>';
+			combatLog = 'The Monster is faster and will have the first attack!\n';
 		}else if(player.speed === monster.speed){
 			if(rng(1,2) === 1){
 				combatSettings[1] = 'player';
-				combatLog = 'The Player is quicker to draw their weapon and will have the first attack!<br>';
+				combatLog = 'The Player is quicker to draw their weapon and will have the first attack!\n';
 			}else{
 				combatSettings[1] = 'monster';
-				combatLog = 'The Monster is quicker to draw their weapon and will have the first attack!<br>';
+				combatLog = 'The Monster is quicker to draw their weapon and will have the first attack!\n';
 			}
 		}
 		return combatSettings;
@@ -205,15 +215,39 @@ function combatTurn(){
 	showPhase();
 	drawField('p',player.position);
 	drawField('m',monster.position);
-	showResults();
-	showMoves();
+	if(combatSettings[1] == "player"){
+		playerTurn();
+	}else{
+		monsterTurn();
+	}
 }
+
 function showPhase(){
 	document.getElementById('phase').innerHTML = 'Phase: ' + combatSettings[0];
 }
-function showResults(){
-	document.getElementById('results').innerHTML = combatLog;
+function maxLength(){
+	return combatLog.length;
 }
+function showResults(){
+	document.getElementById('results').innerHTML = "<textarea id= 'combatlog' class='combatlog' disabled>"+ combatLog + "</textarea>";
+	document.getElementById("combatlog").scrollTop = document.getElementById("combatlog").scrollHeight;
+}
+
 function showMoves(){
 	document.getElementById('moves').innerHTML = getMoves();
+}
+
+function monsterTurn(){
+	monster.state = "Good";
+	if(rng(1,20) >= 15){
+		monster.state = "Scared";
+		combatLog += "The Monster is now " + monster.state + "...\n";
+	}
+	getStateActions();
+	playerTurn();
+}
+
+function playerTurn(){
+	showResults();
+	showMoves();
 }

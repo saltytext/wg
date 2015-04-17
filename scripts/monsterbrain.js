@@ -1,13 +1,14 @@
 //overall status/state
 function getStateActions(){
 	if(monster.state === "Good"){
-		console.log("I am Good");
+		attack();
+		//console.log("I am Good");
 	}else if(monster.state === "OK"){
 		console.log("I am OK");
 	}else if(monster.state === "BAD"){
 		console.log("I am BAD");
 	}else if(monster.state === "Scared"){
-		console.log("I am Scared");
+		moveFarther();
 	}else if(monster.state === "Angry"){
 		console.log("I am Angry");
 	}
@@ -15,7 +16,11 @@ function getStateActions(){
 
 //monster actions
 function attack(){
-	return
+	if(monster.inRange()){
+		combatLog += "The monster would be attacking you right now.." + "\n";
+	}else{
+		moveCloser();
+	}
 }
 
 function heal(){
@@ -73,15 +78,12 @@ function getDirY(v){
 }
 
 function moveCloser(){
-	console.log("The player is at " + player.position + " and I am at " + monster.position);
+	combatLog += "The Monster is moving closer to you!" + "\n";
 	if(monster.inRange()){
-		console.log("I can just attack right now...")
-		//attack()
-	}else{//trying without abs for now...
+		attack();
+	}else{
 		x = Math.abs(monster.position[0] - player.position[0]);
 		y = Math.abs(monster.position[1] - player.position[1]);
-		console.log("The player is " + x + " away from me on the x.");
-		console.log("The player is " + y + " away from me on the y.");
 		if(x > y){
 			monster.moveX(getDirX(1));
 		}else if(x === y){
@@ -98,12 +100,10 @@ function moveCloser(){
 }
 
 function moveFarther(){
-	console.log("The player is at " + player.position + " and I am at " + monster.position);
+	combatLog += "The Monster is moving farther away from you!" + "\n";
 	if(inBounds(monster.position)){
-		x = Math.abs(monster.position[0] - player.position[0]);
-		y = Math.abs(monster.position[1] - player.position[1]);
-		console.log("The player is " + x + " away from me on the x.");
-		console.log("The player is " + y + " away from me on the y.");
+		x = monster.position[0] - player.position[0];
+		y = monster.position[1] - player.position[1];
 		if(x > y){
 			monster.moveX(getDirX(-1));
 		}else if(x === y){
@@ -123,7 +123,7 @@ function moveFarther(){
 		}
 	}else{
 		if(stuckX() && stuckY()){
-			return
+			leaveCorner();			
 		}else if(stuckX()){
 			monster.moveY(getDirY(-1));
 		}else if(stuckY()){
@@ -134,5 +134,68 @@ function moveFarther(){
 
 function changeState(s){
 	monster.state = s;
-	getStateActions();
+	//getStateActions(); note this one might not be needed..
+}
+
+function checkMonsterUp(){
+	if(monster.position[1] + 1 != 6 && (!(monster.position[0] == player.position[0] && monster.position[1] +1 == player.position[1]) )){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function checkMonsterLeft(){
+	list = '';
+	if((monster.position[0] != 0) && (!(monster.position[0] -1 == player.position[0] && monster.position[1] == player.position[1]) )){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function checkMonsterRight(){
+	list = '';
+	if(monster.position[0] + 1 != 5 && (!(monster.position[0] +1 == player.position[0] && monster.position[1] == player.position[1]) )){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function checkMonsterDown(){
+	list = '';
+	if(monster.position[1] != 0 && (!(monster.position[0] == player.position[0] && monster.position[1] -1 == player.position[1]) )){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+function leaveCorner(){
+	if(monster.position[0] == 0 && monster.position[1] == 0){
+		if(checkMonsterUp()){
+			monster.moveY(1);
+		}else if(checkMonsterRight()){
+			monster.moveX(1);
+		}
+	}else if(monster.position[0] == 4 && monster.position[1] == 5){
+		if(checkMonsterDown()){
+			monster.moveY(-1);
+		}else if(checkMonsterLeft()){
+			monster.moveX(-1);
+		}
+	}else if(monster.position[0] == 0 && monster.position[1] == 5){
+		if(checkMonsterDown()){
+			monster.moveY(-1);
+		}else if(checkMonsterRight()){
+			monster.moveX(1);
+		}
+	}else if(monster.position[0] == 4 && monster.position[1] == 0){
+		if(checkMonsterUp()){
+			monster.moveY(1);
+		}else if(checkMonsterLeft()){
+			monster.moveX(-1);
+		}
+	}
 }

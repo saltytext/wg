@@ -18,6 +18,25 @@ table, td, th {
 	text-align: center;
     border: 1px solid black;
 }
-td {
-    padding: 15px;
+table-cell {
+	height: 40px;
+}
+td{ 
+	height: 20px;
+	overflow: hidden;
+	width: 25%;
+}
+table.field{
+	height: 250px;
+	width: 250px;
+	table-layout: fixed;
+}
+textarea.combatlog{
+	resize: none;
+    width: 492px;
+    height: 106px;
+	user-select: none;
+}
+textarea.disabled{ 
+    background: white; 
 }
