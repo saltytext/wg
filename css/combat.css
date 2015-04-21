@@ -1,13 +1,44 @@
-#moves{
-	margin-left : 50%;
-	
+#pfm-wrapper {
+  padding-left: 200px;   /* LC width */
+  padding-right: 150px;  /* RC width */
+
+}
+#pfm-wrapper .column {
+  position: relative;
+  float: left;
+  padding: 20px;
 }
 
-#movement{
-	float: left;
+#rb-wrapper {
+	clear: both;
+	  width: 900px; 
+	margin: 0 auto; 
 }
 
-#actions{
-	padding-left: 40px;
-	float: left;
+table, td, th {
+	margin: 0 auto;
+	text-align: center;
+    border: 1px solid black;
+}
+table-cell {
+	height: 40px;
+}
+td{ 
+	height: 20px;
+	overflow: hidden;
+	width: 25%;
+}
+table.field{
+	height: 250px;
+	width: 250px;
+	table-layout: fixed;
+}
+textarea.combatlog{
+	resize: none;
+    width: 492px;
+    height: 106px;
+	user-select: none;
+}
+textarea.disabled{ 
+    background: white; 
 }

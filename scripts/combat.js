@@ -3,7 +3,8 @@ function rng(min, max){
 }
 
 var player = {
-	health: 100, 
+	health: 100,
+	HP: 100,
 	speed: 10, 
 	damage: 10, 
 	defense: 10, 
@@ -39,6 +40,7 @@ var player = {
 
 var monster = {
 	health: 100, 
+	HP: 100,
 	speed: 10, 
 	damage: 20, 
 	defense: 10, 
@@ -73,6 +75,10 @@ var monster = {
 
 	}
 };
+
+function displayStats(e){
+	document.getElementById(e.toLowerCase()).innerHTML = (e + "<br>" + "Health: <progress id='"+ e + "hp' value='"+ window[e].HP  +"' max='"+ window[e].health +"' title='HP Left: " + window[e].HP + "'></progress>" + "<br>" + "Range: " + window[e].range + "<br>");
+}
 
 //debug version var field = [['00','01','02','03','04','05'],['10','11','12','13','14','15'],['20','21','22','23','24','25'],['30','31','32','33','34','35'],['40','41','42','43','44','45']];
 var field = [['','','','','',''],['','','','','',''],['','','','','',''],['','','','','',''],['','','','','','']];
@@ -215,6 +221,8 @@ function combatTurn(){
 	showPhase();
 	drawField('p',player.position);
 	drawField('m',monster.position);
+	displayStats('player');
+	displayStats('monster');
 	if(combatSettings[1] == "player"){
 		playerTurn();
 	}else{

@@ -13,30 +13,3 @@ li {
 	text-transform: uppercase;
 	padding: 20px;
 }
-table, td, th {
-	margin: 0 auto;
-	text-align: center;
-    border: 1px solid black;
-}
-table-cell {
-	height: 40px;
-}
-td{ 
-	height: 20px;
-	overflow: hidden;
-	width: 25%;
-}
-table.field{
-	height: 250px;
-	width: 250px;
-	table-layout: fixed;
-}
-textarea.combatlog{
-	resize: none;
-    width: 492px;
-    height: 106px;
-	user-select: none;
-}
-textarea.disabled{ 
-    background: white; 
-}
