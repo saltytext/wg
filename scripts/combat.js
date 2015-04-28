@@ -9,11 +9,13 @@ var player = {
 	damage: 10, 
 	defense: 10, 
 	range: 2,
-	accuracy: 40,
-	block: 10,
+	accuracy: 60,
+	block: 0,
 	position: undefined,
 	attack: function(){
-		return (this.damage);
+		if(attackHits("player", "monster")){
+			window["monster"].HP -= this.damage;
+		}
 	},
 	defend: function(){
 		return (this.defense);
@@ -45,12 +47,14 @@ var monster = {
 	damage: 20, 
 	defense: 10, 
 	range: 2,
-	accuracy: 40,
-	block: 10,
+	accuracy: 60,
+	block: 0,
 	state: "Good",//need to add in the monster brain here
 	position: undefined,
 	attack: function(){
-		return (this.damage);
+		if(attackHits("monster", "player")){
+			window["player"].HP -= this.damage;
+		}
 	},
 	defend: function(){
 		return (this.defense);
@@ -77,11 +81,22 @@ var monster = {
 };
 
 function displayStats(e){
-	document.getElementById(e.toLowerCase()).innerHTML = (e + "<br>" + "Health: <progress id='"+ e + "hp' value='"+ window[e].HP  +"' max='"+ window[e].health +"' title='HP Left: " + window[e].HP + "'></progress>" + "<br>" + "Range: " + window[e].range + "<br>");
+	document.getElementById(e.toLowerCase()).innerHTML = (e + "<br>" + "Health: <progress id='"+ e + "hp' value='"+ window[e].HP  +"' max='"+ window[e].health +"' title='HP Left: " + window[e].HP + "'></progress>" + "<br><br>" + "Range: " + window[e].range + "<br>" + "Speed: " + window[e].speed + "<br>" + "Damage: " + window[e].damage + "<br>" + "Defense: " + window[e].defense + "<br>" + "Accuracy: " + window[e].accuracy + "<br>" + "Block: " + window[e].block + "<br>");
 }
 
 //debug version var field = [['00','01','02','03','04','05'],['10','11','12','13','14','15'],['20','21','22','23','24','25'],['30','31','32','33','34','35'],['40','41','42','43','44','45']];
 var field = [['','','','','',''],['','','','','',''],['','','','','',''],['','','','','',''],['','','','','','']];
+
+function attackHits(a, t){
+	//a = attack, t = target
+	//var hitper = (window[a].accuracy - window[t].block);
+	
+	if(rng(1,100) <= (window[a].accuracy - window[t].block)){
+		return true
+	}else{
+		return false
+	}
+}
 
 function showField(){
 	temp = '<table class="field" align="center">'+
@@ -140,7 +155,7 @@ function checkDown(){
 
 function checkAttack(){
 	if(player.inRange()){
-		return '<button>Attack</button>';
+		return '<button onclick="player.attack()">Attack</button>';
 	}else{
 		return '<button disabled>Attack</button>';
 	}
@@ -233,11 +248,9 @@ function combatTurn(){
 function showPhase(){
 	document.getElementById('phase').innerHTML = 'Phase: ' + combatSettings[0];
 }
-function maxLength(){
-	return combatLog.length;
-}
+
 function showResults(){
-	document.getElementById('results').innerHTML = "<textarea id= 'combatlog' class='combatlog' disabled>"+ combatLog + "</textarea>";
+	document.getElementById('results').innerHTML = "<textarea id='combatlog' class='combatlog' disabled>"+ combatLog + "</textarea>";
 	document.getElementById("combatlog").scrollTop = document.getElementById("combatlog").scrollHeight;
 }
 

@@ -1,7 +1,6 @@
 #pfm-wrapper {
   padding-left: 200px;   /* LC width */
   padding-right: 150px;  /* RC width */
-
 }
 #pfm-wrapper .column {
   position: relative;
@@ -11,8 +10,14 @@
 
 #rb-wrapper {
 	clear: both;
-	  width: 900px; 
+	width: 900px; 
 	margin: 0 auto; 
+	padding-left: 200px;   /* LC width */
+	padding-right: 150px;  /* RC width */
+}
+
+#rb-wrapper .skills{
+	
 }
 
 table, td, th {
@@ -38,7 +43,4 @@ textarea.combatlog{
     width: 492px;
     height: 106px;
 	user-select: none;
-}
-textarea.disabled{ 
-    background: white; 
 }
